@@ -1,11 +1,12 @@
 import Head from 'next/head'
-import { MainPageLayout } from '../layouts/mainpage/MainPageLayout'
+import React from 'react'
+import { MainPageLayout } from '@/layouts/mainpage/MainPageLayout';
 
-export default function Home() {
+export default function SignIn() {
     return (
         <>
             <Head>
-                <title>Test</title>
+                <title>Sign in</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
             <div className="pagecontainer">
