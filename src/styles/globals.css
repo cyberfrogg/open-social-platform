@@ -7,13 +7,17 @@
     --pallete-accent-black-color: #1e1f22;
     --pallete-text-color: #f3f4f5;
     --pallete-text-gray-color: #989aa2;
+    --pallete-text-href-color: #00a8fc;
 
     --pallete-color-red: #e93e42;
+    --pallete-color-purple: #5865f2;
+    --pallete-color-darkpurple: #4752c4;
+    --pallete-color-darkdarkpurple: #3c45a5;
 
     --bodycolor: #2b2d31;
     --pallete-shadowcolor: rgba(0, 0, 0, 0.2);
 
-    --pallete-auth-background: #5765f2;
+    --pallete-auth-background: #5865f2;
 }
 
 * {

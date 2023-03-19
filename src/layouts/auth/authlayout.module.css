@@ -25,6 +25,22 @@
     width: calc(100% - 20px);
     max-width: 500px;
     padding: 32px;
+
     background: var(--pallete-primary-color);
     border-radius: 5px;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.25));
+
+    animation: 0.1s ease-out 0s 1 slideOnto;
+}
+
+@keyframes slideOnto {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -70%) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 }

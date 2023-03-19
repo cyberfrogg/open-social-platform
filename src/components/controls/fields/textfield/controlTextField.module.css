@@ -1,4 +1,4 @@
-.passwordfield {
+.fieldroot {
     width: 100%;
     margin-bottom: 20px;
 }
@@ -13,14 +13,14 @@
     display: block;
 }
 
-.passwordfield.required .label::after {
+.fieldroot.required .label::after {
     content: "*";
     font-size: 12px;
     margin-left: 4px;
     color: var(--pallete-color-red);
 }
 
-.passwordfield.fielderror .label {
+.fieldroot.fielderror .label {
     color: var(--pallete-color-red);
 }
 
