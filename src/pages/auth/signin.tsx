@@ -1,18 +1,14 @@
-import Head from 'next/head'
 import React from 'react'
-import { MainPageLayout } from '@/layouts/mainpage/MainPageLayout';
+import { AuthLayout } from '@/layouts/auth/AuthLayout';
+import { ControlTitle } from '@/components/controls/title/controlTitle';
 
 export default function SignIn() {
     return (
         <>
-            <Head>
-                <title>Sign in</title>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-            </Head>
             <div className="pagecontainer">
-                <MainPageLayout title={"Home"}>
-                    text
-                </MainPageLayout>
+                <AuthLayout title={"Home"}>
+                    <ControlTitle weight={1} isCentered={true}>Sign in</ControlTitle>
+                </AuthLayout>
             </div>
         </>
     )
