@@ -1,0 +1,20 @@
+.undercontent {
+    width: 100%;
+    font-size: 13.5px;
+    margin-top: 4px;
+    color: var(--pallete-text-gray-color);
+}
+
+.undercontent>* {
+    font-size: 13.5px;
+    color: var(--pallete-text-gray-color);
+}
+
+.undercontent>a {
+    color: var(--pallete-text-href-color);
+    text-decoration: none;
+}
+
+.undercontent>a:hover {
+    text-decoration: underline;
+}

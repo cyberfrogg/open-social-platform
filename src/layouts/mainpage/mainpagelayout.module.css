@@ -1,0 +1,17 @@
+.mainpagelayout{
+    width: 100%;
+}
+.contentsplit{
+    width: calc(100% - 40px);
+    min-height: calc(100vh - 50px);
+    padding: 0 0px;
+    max-width: 1600px;
+    display: grid;
+    grid-template-columns: 240px 1fr 240px;
+    margin: 0 auto;
+    background: var(--pallete-primary-color);
+}
+.maincontent{
+    width: 100%;
+    min-height: calc(100vh - 50px);
+}

@@ -1,0 +1,42 @@
+.fieldRootClass {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-gap: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.checkmarkwrapper {
+    width: 24px;
+    height: 24px;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    border: 1px solid var(--pallete-text-gray-color);
+    position: relative;
+}
+
+.checkmarkCheckedState {
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    background: var(--pallete-color-purple);
+    border-radius: 7px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+}
+
+.checkmarkCheckedState svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.errortext {
+    color: var(--pallete-color-red);
+}
