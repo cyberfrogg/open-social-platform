@@ -7,6 +7,8 @@ import { RootState } from '@/store';
 import Link from 'next/link';
 import { setLogin, setPassword } from '@/slices/auth/authLoginSlice';
 import { ControlTextField } from '@/components/controls/fields/textfield/controlTextField';
+import { ControlUnderTitle } from '@/components/controls/title/controlUnderTitle';
+import { ControlCfCaptcha } from '@/components/controls/fields/cfcaptcha/controlCfCaptcha';
 
 export default function SignIn() {
     const dispatch = useDispatch()
@@ -19,12 +21,19 @@ export default function SignIn() {
     const isPasswordError = useSelector((state: RootState) => state.authLogin.isPasswordError);
     const passwordErrorMessage = useSelector((state: RootState) => state.authLogin.passwordErrorMessage);
 
+    const cfCaptchaValue = useSelector((state: RootState) => state.authLogin.cfcaptcha);
+    const isCfCaptchaError = useSelector((state: RootState) => state.authLogin.isCfCaptchaError);
+    const cfCaptchaErrorMessage = useSelector((state: RootState) => state.authLogin.cfCaptchaErrorMessage);
+
 
     const OnLoginFieldChange = (value: string) => {
         dispatch(setLogin(value));
     }
     const OnPasswordFieldChange = (value: string) => {
         dispatch(setPassword(value));
+    }
+    const OnCfCaptchaFieldChange = (value: string) => {
+        console.log("cf catpcha complete");
     }
     const OnSubmitButtonClick = (value: string) => {
         console.log("click");
@@ -35,6 +44,7 @@ export default function SignIn() {
             <div className="pagecontainer">
                 <AuthLayout title={"Home"}>
                     <ControlTitle weight={1} isCentered={true}>Welcome back!</ControlTitle>
+                    <ControlUnderTitle isCentered={true}>Sign in here</ControlUnderTitle>
 
                     <ControlTextField
                         label={"Email or login name"}
@@ -59,8 +69,14 @@ export default function SignIn() {
                         onChange={OnPasswordFieldChange}
                         value={passwordValue}
                     >
-                        <Link href={"/auth/restore-password"}>Forgor your password?</Link>
+                        <Link href={"/auth/restore-password"}>Forgor password?</Link>
                     </ControlTextField>
+
+                    <ControlCfCaptcha
+                        isError={isCfCaptchaError}
+                        errorMessage={cfCaptchaErrorMessage}
+                        onChange={OnCfCaptchaFieldChange}
+                    />
 
                     <ControlButton
                         label={"Sign in"}

@@ -3,32 +3,22 @@
     margin-bottom: 20px;
 }
 
-.label {
-    width: 100%;
-    font-size: 12px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--pallete-text-gray-color);
+.fieldroot .errorspace {
+    display: none;
+    font-size: var(--font-size-undercontent);
+    color: var(--font-color-error);
+}
+
+.fieldroot.fielderror .errorspace {
     display: block;
-}
-
-.fieldroot.required .label::after {
-    content: "*";
-    font-size: 12px;
-    margin-left: 4px;
-    color: var(--pallete-color-red);
-}
-
-.fieldroot.fielderror .label {
-    color: var(--pallete-color-red);
 }
 
 .field {
     width: 100%;
-    height: 40px;
-    background: var(--pallete-accent-black-color);
-    border-radius: 3px;
+    height: 32px;
+    background: var(--background-input-text);
+    border: var(--outline-inputext);
+    border-radius: 16px;
 }
 
 .inputfield {
@@ -38,4 +28,9 @@
     border: none;
     background: none;
     outline: none;
+    font-size: var(--font-size-inputtext);
+}
+
+.inputfield::placeholder {
+    color: var(--font-color-inputtext-placeholder);
 }

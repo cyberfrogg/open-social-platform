@@ -1,11 +1,12 @@
-.button{
+.button {
     width: calc(100% - 0px);
     box-sizing: content-box;
     border: none;
     height: 32px;
     border-radius: 4px;
 }
-.link{
+
+.link {
     width: calc(100% - 20px);
     height: 100%;
     display: flex;
@@ -14,17 +15,25 @@
     padding: 0 10px;
     box-sizing: content-box;
 }
-.content{
-    font-size: 16px;
-    color: var(--pallete-text-gray-color);
+
+.content {
+    color: var(--font-color-secondary);
     font-weight: 500;
     margin-left: 10px;
 }
-.content *{
+
+.button * {
     font-size: 16px;
-    color: var(--pallete-text-gray-color);
+    color: var(--font-color-secondary);
+    fill: var(--font-color-secondary);
     font-weight: 500;
 }
-.button:hover{
-    background: var(--pallete-accent-color);
+
+.button:hover {
+    background: var(--background-panel);
+}
+
+.button:hover * {
+    color: var(--font-color-primary);
+    fill: var(--font-color-primary);
 }

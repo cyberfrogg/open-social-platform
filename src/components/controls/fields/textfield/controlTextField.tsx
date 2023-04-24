@@ -35,9 +35,11 @@ export const ControlTextField: React.FC<IControlTextFieldProps> = (props) => {
 
     return (
         <div className={fieldRootClass}>
-            <label className={classes.label}>{props.label}{errorMessageText}</label>
             <div className={classes.field}>
-                <input className={classes.inputfield} name={props.labelname} type={props.type} onChange={onFieldValueChanged} value={props.value} />
+                <input className={classes.inputfield} name={props.labelname} type={props.type} onChange={onFieldValueChanged} value={props.value} placeholder={props.label} />
+            </div>
+            <div className={classes.errorspace}>
+                {errorMessageText}
             </div>
             <div className={undercontentclasses.undercontent}>
                 {props.children}

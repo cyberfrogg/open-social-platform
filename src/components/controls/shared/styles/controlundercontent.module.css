@@ -1,17 +1,17 @@
 .undercontent {
     width: 100%;
-    font-size: 13.5px;
+    font-size: var(--font-size-undercontent);
     margin-top: 4px;
-    color: var(--pallete-text-gray-color);
+    color: var(--font-color-secondary);
 }
 
 .undercontent>* {
-    font-size: 13.5px;
-    color: var(--pallete-text-gray-color);
+    font-size: var(--font-size-undercontent);
+    color: var(--font-color-secondary);
 }
 
 .undercontent>a {
-    color: var(--pallete-text-href-color);
+    color: var(--font-color-url);
     text-decoration: none;
 }
 

@@ -1,17 +1,18 @@
-.sidebar{
+.sidebar {
     width: calc(100% - 20px);
     padding: 0 10px;
     min-height: 200px;
     box-sizing: content-box;
-    background: var(--pallete-secondary-color);
     padding-top: 10px;
 }
-.block{
+
+.block {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
-.blocklist{
+
+.blocklist {
     list-style: none;
     display: flex;
     flex-direction: column;
