@@ -6,6 +6,9 @@
     --background-input-text: linear-gradient(90deg, #202039 0%, #22223D 58.33%, #202039 100%);
     --background-button: linear-gradient(84.38deg, #925FFF 9.88%, #B85FFF 93.01%);
     --background-button-active: linear-gradient(84.38deg, #8D57FF 10.31%, #E065FF 93.01%);
+    --background-button-disabled: linear-gradient(84.38deg, #30343d 10.31%, #5f5b7a 93.01%);
+    --background-checkmark: linear-gradient(18.22deg, #1C1C2F 0%, #21213D 100%);
+    --background-checkmark-active: linear-gradient(84.38deg, #925FFF 9.88%, #B85FFF 93.01%);
 
     --outline-panel: 1px solid #4D4D75;
     --outline-inputext: 1px solid #4D4D75;

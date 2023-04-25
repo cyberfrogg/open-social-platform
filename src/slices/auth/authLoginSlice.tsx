@@ -10,7 +10,7 @@ export interface AuthLoginSliceState {
     isPasswordError: boolean
     passwordErrorMessage: string,
 
-    cfcaptcha: string,
+    cfCaptcha: string,
     isCfCaptchaError: boolean,
     cfCaptchaErrorMessage: string
 }
@@ -24,7 +24,7 @@ const initialState: AuthLoginSliceState = {
     isPasswordError: false,
     passwordErrorMessage: "",
 
-    cfcaptcha: "",
+    cfCaptcha: "",
     isCfCaptchaError: false,
     cfCaptchaErrorMessage: ""
 }
@@ -36,13 +36,6 @@ export const authLoginSlice = createSlice({
         setLogin: (state, action: PayloadAction<string>) => {
             state.login = action.payload;
         },
-        setPassword: (state, action: PayloadAction<string>) => {
-            state.password = action.payload;
-        },
-        setCfCaptcha: (state, action: PayloadAction<string>) => {
-            state.cfcaptcha = action.payload;
-        },
-
         setIsLoginError: (state, action: PayloadAction<boolean>) => {
             state.isLoginError = action.payload;
         },
@@ -50,6 +43,9 @@ export const authLoginSlice = createSlice({
             state.loginErrorMessage = action.payload;
         },
 
+        setPassword: (state, action: PayloadAction<string>) => {
+            state.password = action.payload;
+        },
         setIsPasswordError: (state, action: PayloadAction<boolean>) => {
             state.isPasswordError = action.payload;
         },
@@ -57,6 +53,9 @@ export const authLoginSlice = createSlice({
             state.passwordErrorMessage = action.payload;
         },
 
+        setCfCaptcha: (state, action: PayloadAction<string>) => {
+            state.cfCaptcha = action.payload;
+        },
         setCfCaptchaError: (state, action: PayloadAction<boolean>) => {
             state.isCfCaptchaError = action.payload;
         },

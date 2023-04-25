@@ -5,6 +5,7 @@ import undercontentclasses from '@/components/controls/shared/styles/controlunde
 interface IControlButtonProps {
     label: string,
     onClick: any,
+    isEnabled: boolean,
     children: React.ReactNode
 }
 
@@ -13,9 +14,14 @@ export const ControlButton: React.FC<IControlButtonProps> = (props) => {
         props.onClick();
     }
 
+    let fieldRootClass = classes.button;
+
+    if (!props.isEnabled)
+        fieldRootClass += " " + classes.disabled;
+
     return (
         <>
-            <button className={classes.button} onClick={onButtonClick}>
+            <button className={fieldRootClass} onClick={onButtonClick}>
                 <div className={classes.label}>{props.label}</div>
             </button>
             <div className={undercontentclasses.undercontent}>

@@ -21,7 +21,7 @@ export default function SignIn() {
     const isPasswordError = useSelector((state: RootState) => state.authLogin.isPasswordError);
     const passwordErrorMessage = useSelector((state: RootState) => state.authLogin.passwordErrorMessage);
 
-    const cfCaptchaValue = useSelector((state: RootState) => state.authLogin.cfcaptcha);
+    const cfCaptchaValue = useSelector((state: RootState) => state.authLogin.cfCaptcha);
     const isCfCaptchaError = useSelector((state: RootState) => state.authLogin.isCfCaptchaError);
     const cfCaptchaErrorMessage = useSelector((state: RootState) => state.authLogin.cfCaptchaErrorMessage);
 
