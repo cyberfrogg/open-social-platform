@@ -24,7 +24,7 @@ export const ControlButton: React.FC<IControlButtonProps> = (props) => {
             <button className={fieldRootClass} onClick={onButtonClick}>
                 <div className={classes.label}>{props.label}</div>
             </button>
-            <div className={undercontentclasses.undercontent}>
+            <div className={undercontentclasses.undercontent + " " + classes.undercontent}>
                 {props.children}
             </div>
         </>

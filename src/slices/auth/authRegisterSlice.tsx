@@ -26,7 +26,9 @@ export interface AuthRegisterSliceState {
     isTosAcceptedError: boolean
     tosAcceptedErrorMessage: string,
 
-    isButtonEnabled: boolean
+    isButtonEnabled: boolean,
+    responseErrorMessage: string,
+    isSuccess: boolean
 }
 
 const initialState: AuthRegisterSliceState = {
@@ -54,7 +56,9 @@ const initialState: AuthRegisterSliceState = {
     isTosAcceptedError: false,
     tosAcceptedErrorMessage: "",
 
-    isButtonEnabled: false
+    isButtonEnabled: true,
+    responseErrorMessage: "",
+    isSuccess: false
 }
 
 export const authRegisterSlice = createSlice({
@@ -124,6 +128,14 @@ export const authRegisterSlice = createSlice({
         setIsButtonEnabled: (state, action: PayloadAction<boolean>) => {
             state.isButtonEnabled = action.payload;
         },
+
+        setResponseErrorMessage: (state, action: PayloadAction<string>) => {
+            state.responseErrorMessage = action.payload
+        },
+
+        setIsSuccess: (state, action: PayloadAction<boolean>) => {
+            state.isSuccess = action.payload
+        }
     },
 })
 
@@ -152,7 +164,10 @@ export const {
     setIsTosAcceptedError,
     setTosAcceptedErrorMessage,
 
-    setIsButtonEnabled
+    setIsButtonEnabled,
+
+    setResponseErrorMessage,
+    setIsSuccess
 } = authRegisterSlice.actions
 
 export default authRegisterSlice.reducer

@@ -25,6 +25,8 @@ export default function SignIn() {
     const isCfCaptchaError = useSelector((state: RootState) => state.authLogin.isCfCaptchaError);
     const cfCaptchaErrorMessage = useSelector((state: RootState) => state.authLogin.cfCaptchaErrorMessage);
 
+    const isButtonEnabled = false;
+
 
     const OnLoginFieldChange = (value: string) => {
         dispatch(setLogin(value));
@@ -80,9 +82,10 @@ export default function SignIn() {
 
                     <ControlButton
                         label={"Sign in"}
+                        isEnabled={isButtonEnabled}
                         onClick={OnSubmitButtonClick}
                     >
-                        Need an account? <Link href={"/auth/join"}>Register</Link>
+                        Need an account? <Link href={"/auth/join"}>Create account</Link>
                     </ControlButton>
                 </AuthLayout>
             </div>

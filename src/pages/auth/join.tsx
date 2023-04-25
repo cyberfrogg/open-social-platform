@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AuthLayout } from '@/layouts/auth/AuthLayout';
 import { ControlTitle } from '@/components/controls/title/controlTitle';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,10 +9,17 @@ import { ControlTextField } from '@/components/controls/fields/textfield/control
 import { ControlCheckmarkField } from '../../components/controls/fields/checkmark/controlCheckmark';
 import { ControlCfCaptcha } from '@/components/controls/fields/cfcaptcha/controlCfCaptcha';
 import { ControlUnderTitle } from '@/components/controls/title/controlUnderTitle';
-import { setCfCaptcha, setEmail, setNickname, setPassword, setPasswordConfirm, setTosAccepted } from '@/slices/auth/authRegisterSlice';
+import { setCfCaptcha, setCfCaptchaErrorMessage, setEmail, setEmailErrorMessage, setIsButtonEnabled, setIsEmailError, setIsNicknameError, setIsPasswordConfirmError, setIsPasswordError, setIsSuccess, setIsTosAcceptedError, setNickname, setNicknameErrorMessage, setPassword, setPasswordConfirm, setPasswordConfirmErrorMessage, setPasswordErrorMessage, setResponseErrorMessage, setTosAccepted, setTosAcceptedErrorMessage } from '@/slices/auth/authRegisterSlice';
+import IsFieldValid from '@/utils/shared/fieldvalidation';
+import GetTextTranslation from '@/localization/allTranslations';
+import GetApiUrlForAction from '@/utils/shared/getApiUrlForAction';
+import ReqResponse from '@/data/shared/reqResponse';
+import { ControlSimpleError } from '@/components/controls/errors/controlSimpleError';
 
 export default function Join() {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    const language = useSelector((state: RootState) => state.language.language);
 
     const nicknameValue = useSelector((state: RootState) => state.authRegister.nickname);
     const isNicknameError = useSelector((state: RootState) => state.authRegister.isNicknameError);
@@ -40,32 +47,119 @@ export default function Join() {
 
     const isButtonEnabled = useSelector((state: RootState) => state.authRegister.isButtonEnabled);
 
+    const responseErrorMessage = useSelector((state: RootState) => state.authRegister.responseErrorMessage);
 
+    const isSuccess = useSelector((state: RootState) => state.authRegister.isSuccess);
+
+
+    // fields working properly
     const OnNicknameFieldChange = (value: string) => {
         dispatch(setNickname(value));
+
+        const fieldValidationResult = IsFieldValid(value, "nickname");
+        dispatch(setIsNicknameError(!fieldValidationResult.success));
+        dispatch(setNicknameErrorMessage(GetTextTranslation(fieldValidationResult.message, language)));
     }
     const OnEmailFieldChange = (value: string) => {
         dispatch(setEmail(value));
+
+        const fieldValidationResult = IsFieldValid(value, "email");
+        dispatch(setIsEmailError(!fieldValidationResult.success));
+        dispatch(setEmailErrorMessage(GetTextTranslation(fieldValidationResult.message, language)));
     }
 
     const OnPasswordFieldChange = (value: string) => {
         dispatch(setPassword(value));
+
+        const fieldValidationResult = IsFieldValid(value, "password");
+        dispatch(setIsPasswordError(!fieldValidationResult.success));
+        dispatch(setPasswordErrorMessage(GetTextTranslation(fieldValidationResult.message, language)));
     }
+
     const OnPasswordConfirmFieldChange = (value: string) => {
         dispatch(setPasswordConfirm(value));
+
+        const isPasswordsEquals = passwordValue == value;
+        const isPasswordsEqualsMessage = isPasswordsEquals ? "" : GetTextTranslation("ERRVALID_PASSWORDS_NOT_EQUALS", language);
+
+        dispatch(setIsPasswordConfirmError(!isPasswordsEquals));
+        dispatch(setPasswordConfirmErrorMessage(isPasswordsEqualsMessage));
     }
 
     const OnCfCaptchaFieldChange = (value: string) => {
         dispatch(setCfCaptcha(value));
+
+        const fieldValidationResult = IsFieldValid(value, "turnstileCaptchaToken");
+        dispatch(setIsPasswordConfirmError(!fieldValidationResult.success));
+        dispatch(setCfCaptchaErrorMessage(GetTextTranslation(fieldValidationResult.message, language)));
     }
 
     const OnTosCheckarmClick = (value: boolean) => {
         dispatch(setTosAccepted(value));
+
+        const errorMessage = value ? "" : GetTextTranslation("ERRVALID_TOS_NOT_ACCEPTED", language);
+
+        dispatch(setIsTosAcceptedError(!value));
+        dispatch(setTosAcceptedErrorMessage(errorMessage));
     }
 
-    const OnSubmitButtonClick = () => {
-        if (!isButtonEnabled) {
+    // submit button
+    const OnSubmitButtonClick = async () => {
+        if (isButtonEnabled) {
+            console.log("Clicked on submit button");
 
+            dispatch(setIsButtonEnabled(false));
+
+            const response = await Register();
+
+            if (!response.success) {
+                OnNicknameFieldChange(nicknameValue);
+                OnEmailFieldChange(emailValue);
+                OnPasswordFieldChange(passwordValue);
+                OnPasswordConfirmFieldChange(passwordConfirmValue);
+                OnCfCaptchaFieldChange(cfCaptchaValue);
+                OnTosCheckarmClick(tosAcceptedValue);
+
+                dispatch(setIsSuccess(false));
+                dispatch(setResponseErrorMessage(GetTextTranslation(response.message, language)));
+            }
+            else {
+                dispatch(setIsSuccess(true));
+                console.log("Registration success. Verification email sent");
+            }
+
+            dispatch(setIsButtonEnabled(true));
+        }
+    }
+
+    // api call
+    const Register = async (): Promise<ReqResponse<boolean>> => {
+        const apiUrl = GetApiUrlForAction("user/auth/register");
+
+        const payload = {
+            "nickname": nicknameValue,
+            "email": emailValue,
+            "password": passwordValue,
+            "turnstileCaptchaToken": cfCaptchaValue
+        };
+
+        try {
+            //fetch
+            const fetchedRequest = await fetch(apiUrl, {
+                body: JSON.stringify(payload),
+                method: "POST",
+                headers: new Headers({
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                })
+            });
+
+            const fetchedJson = await fetchedRequest.json();
+
+            return new ReqResponse(fetchedJson.success, fetchedJson.message, fetchedJson.success);
+        }
+        catch {
+            return new ReqResponse(false, "ERRCODE_REQUEST_FAILED");
         }
     }
 
@@ -132,6 +226,7 @@ export default function Join() {
                     <ControlCfCaptcha
                         isError={isCfCaptchaError}
                         errorMessage={cfCaptchaErrorMessage}
+                        value={cfCaptchaValue}
                         onChange={OnCfCaptchaFieldChange}
                     />
 
@@ -155,8 +250,13 @@ export default function Join() {
                     >
                         Already have an account? <Link href={"/auth/signin"}>Sign in</Link>
                     </ControlButton>
+
+                    <ControlSimpleError isCentered={false}>
+                        {responseErrorMessage}
+                    </ControlSimpleError>
                 </AuthLayout>
             </div>
         </>
-    )
+    );
 }
+

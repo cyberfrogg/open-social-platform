@@ -13,6 +13,10 @@
     user-select: none;
 }
 
+.undercontent {
+    margin-bottom: 20px;
+}
+
 .button .label {
     font-size: var(--font-size-inputtext);
     text-align: center;
