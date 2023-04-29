@@ -1,4 +1,6 @@
-open-social-platform-fontend
+GPL
+
+open-social-platform-frontend
 
 Copyright (C) 2023
 

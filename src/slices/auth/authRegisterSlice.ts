@@ -108,7 +108,7 @@ export const authRegisterSlice = createSlice({
         setCfCaptcha: (state, action: PayloadAction<string>) => {
             state.cfCaptcha = action.payload;
         },
-        setCfCaptchaError: (state, action: PayloadAction<boolean>) => {
+        setIsCfCaptchaError: (state, action: PayloadAction<boolean>) => {
             state.isCfCaptchaError = action.payload;
         },
         setCfCaptchaErrorMessage: (state, action: PayloadAction<string>) => {
@@ -157,7 +157,7 @@ export const {
     setPasswordConfirmErrorMessage,
 
     setCfCaptcha,
-    setCfCaptchaError,
+    setIsCfCaptchaError,
     setCfCaptchaErrorMessage,
 
     setTosAccepted,

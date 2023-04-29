@@ -6,6 +6,7 @@
 .field {
     width: 300px;
     height: 69px;
+    background: var(--background-dark);
 }
 
 .fieldroot .errorspace {

@@ -9,7 +9,7 @@ import { ControlTextField } from '@/components/controls/fields/textfield/control
 import { ControlCheckmarkField } from '../../components/controls/fields/checkmark/controlCheckmark';
 import { ControlCfCaptcha } from '@/components/controls/fields/cfcaptcha/controlCfCaptcha';
 import { ControlUnderTitle } from '@/components/controls/title/controlUnderTitle';
-import { setCfCaptcha, setCfCaptchaErrorMessage, setEmail, setEmailErrorMessage, setIsButtonEnabled, setIsEmailError, setIsNicknameError, setIsPasswordConfirmError, setIsPasswordError, setIsSuccess, setIsTosAcceptedError, setNickname, setNicknameErrorMessage, setPassword, setPasswordConfirm, setPasswordConfirmErrorMessage, setPasswordErrorMessage, setResponseErrorMessage, setTosAccepted, setTosAcceptedErrorMessage } from '@/slices/auth/authRegisterSlice';
+import { setCfCaptcha, setCfCaptchaErrorMessage, setEmail, setEmailErrorMessage, setIsButtonEnabled, setIsCfCaptchaError, setIsEmailError, setIsNicknameError, setIsPasswordConfirmError, setIsPasswordError, setIsSuccess, setIsTosAcceptedError, setNickname, setNicknameErrorMessage, setPassword, setPasswordConfirm, setPasswordConfirmErrorMessage, setPasswordErrorMessage, setResponseErrorMessage, setTosAccepted, setTosAcceptedErrorMessage } from '@/slices/auth/authRegisterSlice';
 import IsFieldValid from '@/utils/shared/fieldvalidation';
 import GetTextTranslation from '@/localization/allTranslations';
 import GetApiUrlForAction from '@/utils/shared/getApiUrlForAction';
@@ -93,7 +93,7 @@ export default function Join() {
         dispatch(setCfCaptcha(value));
 
         const fieldValidationResult = IsFieldValid(value, "turnstileCaptchaToken");
-        dispatch(setIsPasswordConfirmError(!fieldValidationResult.success));
+        dispatch(setIsCfCaptchaError(!fieldValidationResult.success));
         dispatch(setCfCaptchaErrorMessage(GetTextTranslation(fieldValidationResult.message, language)));
     }
 
