@@ -18,6 +18,7 @@ import ReqResponse from '@/data/shared/reqResponse';
 import GetApiUrlForAction from '@/utils/shared/getApiUrlForAction';
 import UserSessionData from '@/data/sessions/userSessionData';
 import Sleep from '../../utils/shared/sleep';
+import { ApplyClientSessionData } from '@/utils/auth/userSessionDataUtils';
 
 export default function EmailVerify() {
     const dispatch = useDispatch();
@@ -67,7 +68,7 @@ export default function EmailVerify() {
 
             const response = await VerifyEmail();
 
-            if (!response.success) {
+            if (!response.success || response.data == null) {
                 OnTokenFieldChange(tokenValue);
                 OnCfCaptchaFieldChange(cfCaptchaValue);
 
@@ -80,6 +81,8 @@ export default function EmailVerify() {
                 console.log(response.data);
 
                 await Sleep(3000);
+
+                ApplyClientSessionData(response.data);
 
                 router.push(redirectPageAfterSuccess);
             }

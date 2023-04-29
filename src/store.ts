@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import authLoginReducer from './slices/auth/authLoginSlice';
 import authRegisterReducer from './slices/auth/authRegisterSlice';
 import authEmailVerifyReducer from './slices/auth/authEmailVerifySlice';
+import authSessionReducer from './slices/auth/authSessionSlice';
 import languageReducer from './slices/languageSlice';
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
         authLogin: authLoginReducer,
         authRegister: authRegisterReducer,
         authEmailVerify: authEmailVerifyReducer,
+        authSession: authSessionReducer,
         language: languageReducer
     },
 })
