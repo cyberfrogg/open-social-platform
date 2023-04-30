@@ -1,5 +1,8 @@
 import { setCookie, getCookie, hasCookie } from 'cookies-next';
 import UserSessionData from '../../data/sessions/userSessionData';
+import { Dispatch } from 'react';
+import { AnyAction } from '@reduxjs/toolkit';
+import { setAuthSession, setIsSessionCollected } from '@/slices/auth/authSessionSlice';
 
 const ApplyClientSessionData = (sessioData: UserSessionData) => {
     let raw = JSON.stringify(sessioData);
@@ -31,18 +34,16 @@ const GetClientSessionData = (): UserSessionData | undefined => {
 }
 
 // To setup session state in useEffect. Call it on every page in useEffect
-const SetupClientSession = (currentSessionData: UserSessionData | null, completeAction: any) => {
+const SetupClientSession = (currentSessionData: UserSessionData | undefined, isSessionCollected: boolean, dispatch: Dispatch<AnyAction>) => {
 
-    if (currentSessionData != null) {
+    if (isSessionCollected) {
         return;
     }
 
     let userSessionFromCookies = GetClientSessionData();
 
-    if (userSessionFromCookies == undefined)
-        return;
-
-    completeAction(userSessionFromCookies);
+    dispatch(setIsSessionCollected(true))
+    dispatch(setAuthSession(userSessionFromCookies))
 }
 
 export { ApplyClientSessionData, GetClientSessionData, SetupClientSession }

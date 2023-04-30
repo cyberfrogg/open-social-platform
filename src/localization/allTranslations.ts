@@ -23,7 +23,9 @@ const localization = {
 
         "ERRVALID_TOS_NOT_ACCEPTED": "You must accept ToS and Privacy Policy",
 
-        "ERRCODE_USER_EXISTS": "User is already exist with this nickname or email"
+        "ERRCODE_USER_EXISTS": "User is already exist with this nickname or email",
+        "ERRCODE_INVALID_CREDITS": "Login or Password is not valid",
+        "ERRCODE_USER_EMAIL_NOT_VERIFIED": "Email is not verified. Re-create account or verify email",
     },
     "ru": {
         "PART_SIDEBAR_HOME": "Главная",
@@ -49,7 +51,9 @@ const localization = {
 
         "ERRVALID_TOS_NOT_ACCEPTED": "Вы должны принять Tos и Privacy Policy",
 
-        "ERRCODE_USER_EXISTS": "Пользователь уже существует с таким никнеймом или е-мейлом"
+        "ERRCODE_USER_EXISTS": "Пользователь уже существует с таким никнеймом или е-мейлом",
+        "ERRCODE_INVALID_CREDITS": "Не правильный логин или прароль",
+        "ERRCODE_USER_EMAIL_NOT_VERIFIED": "Е-мейл не подтверждён. Пересоздайте аккаунт или подтвердите е-мейл"
     }
 } as any;
 

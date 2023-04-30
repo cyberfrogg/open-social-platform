@@ -3,25 +3,31 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import UserSessionData from '../../data/sessions/userSessionData';
 
 export interface AuthSessionSliceState {
-    session: UserSessionData | null
+    session: UserSessionData | undefined,
+    isSessionCollected: boolean
 }
 
 const initialState: AuthSessionSliceState = {
-    session: null,
+    session: undefined,
+    isSessionCollected: false
 }
 
 export const authSessionSlice = createSlice({
-    name: 'authRegister',
+    name: 'authSession',
     initialState,
     reducers: {
-        setAuthSession: (state, action: PayloadAction<UserSessionData>) => {
+        setAuthSession: (state, action: PayloadAction<UserSessionData | undefined>) => {
             state.session = action.payload;
         },
+        setIsSessionCollected: (state, action: PayloadAction<boolean>) => {
+            state.isSessionCollected = action.payload;
+        }
     },
 })
 
 export const {
-    setAuthSession
+    setAuthSession,
+    setIsSessionCollected
 } = authSessionSlice.actions
 
 export default authSessionSlice.reducer

@@ -12,7 +12,11 @@ export interface AuthLoginSliceState {
 
     cfCaptcha: string,
     isCfCaptchaError: boolean,
-    cfCaptchaErrorMessage: string
+    cfCaptchaErrorMessage: string,
+
+    isButtonEnabled: boolean,
+    responseErrorMessage: string,
+    isSuccess: boolean
 }
 
 const initialState: AuthLoginSliceState = {
@@ -26,7 +30,11 @@ const initialState: AuthLoginSliceState = {
 
     cfCaptcha: "",
     isCfCaptchaError: false,
-    cfCaptchaErrorMessage: ""
+    cfCaptchaErrorMessage: "",
+
+    isButtonEnabled: true,
+    responseErrorMessage: "",
+    isSuccess: false
 }
 
 export const authLoginSlice = createSlice({
@@ -56,28 +64,44 @@ export const authLoginSlice = createSlice({
         setCfCaptcha: (state, action: PayloadAction<string>) => {
             state.cfCaptcha = action.payload;
         },
-        setCfCaptchaError: (state, action: PayloadAction<boolean>) => {
+        setIsCfCaptchaError: (state, action: PayloadAction<boolean>) => {
             state.isCfCaptchaError = action.payload;
         },
         setCfCaptchaErrorMessage: (state, action: PayloadAction<string>) => {
             state.cfCaptchaErrorMessage = action.payload;
         },
+
+        setIsButtonEnabled: (state, action: PayloadAction<boolean>) => {
+            state.isButtonEnabled = action.payload;
+        },
+
+        setResponseErrorMessage: (state, action: PayloadAction<string>) => {
+            state.responseErrorMessage = action.payload
+        },
+
+        setIsSuccess: (state, action: PayloadAction<boolean>) => {
+            state.isSuccess = action.payload
+        }
     },
 })
 
 export const {
     setLogin,
-    setPassword,
-    setCfCaptcha,
-
     setIsLoginError,
     setLoginErrorMessage,
 
+    setPassword,
     setIsPasswordError,
     setPasswordErrorMessage,
 
-    setCfCaptchaError,
-    setCfCaptchaErrorMessage
+    setCfCaptcha,
+    setIsCfCaptchaError,
+    setCfCaptchaErrorMessage,
+
+    setIsButtonEnabled,
+    setResponseErrorMessage,
+    setIsSuccess
+
 } = authLoginSlice.actions
 
 export default authLoginSlice.reducer

@@ -17,9 +17,25 @@ import ReqResponse from '@/data/shared/reqResponse';
 import { ControlSimpleError } from '@/components/controls/errors/controlSimpleError';
 import { SequencePanel } from '@/components/grid/sequencePanel/sequencePanel';
 import { SequencePanelItem } from '@/components/grid/sequencePanel/sequencePanelItem';
+import { SetupClientSession } from '@/utils/auth/userSessionDataUtils';
+import { useRouter } from 'next/router';
 
 export default function Join() {
     const dispatch = useDispatch();
+    const router = useRouter();
+
+    const userSession = useSelector((state: RootState) => state.authSession.session);
+    const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+
+    // setup usersession
+    useEffect(() => {
+        SetupClientSession(userSession, isSessionCollected, dispatch);
+    });
+
+    // if authorized -> return to home
+    if (isSessionCollected && userSession != undefined) {
+        router.push(process.env.NEXT_PUBLIC_WEBSITE_URL as string);
+    }
 
     const language = useSelector((state: RootState) => state.language.language);
 
@@ -169,7 +185,7 @@ export default function Join() {
     return (
         <>
             <div className="pagecontainer">
-                <AuthLayout title={"Home"}>
+                <AuthLayout title={"Create Account"}>
                     <SequencePanel panelIndex={sequencePanelIndex}>
                         <SequencePanelItem>
                             <ControlTitle weight={1} isCentered={true}>Join Open Community!</ControlTitle>
