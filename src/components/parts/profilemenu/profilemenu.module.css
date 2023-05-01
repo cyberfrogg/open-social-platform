@@ -1,0 +1,95 @@
+.profilemenu {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profilemenu:hover .username p {
+    color: var(--font-color-primary);
+    transition: 0.2s color;
+}
+
+.profilemenu .container {
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.container {
+    width: calc(100% - 20px - 0px);
+    padding: 0 10px;
+    height: calc(100% - 8px);
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+    align-items: center;
+    grid-gap: 10px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    background: var(--background-preload);
+    border-radius: 100%;
+}
+
+.username {
+    width: 100%;
+    overflow: hidden;
+}
+
+.username p {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--font-color-secondary);
+    font-weight: 500;
+    transition: 0.2s color;
+}
+
+.dropdownbutton {
+    background: none;
+    border: none;
+}
+
+.dropdownbutton svg {
+    stroke: var(--font-color-secondary);
+}
+
+
+
+
+
+.profilemenuloggedout {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerloggedout {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loggedoutbutton {
+    height: 32px;
+    padding: 0 5px;
+    margin: 0 5px;
+    background: none;
+    color: var(--font-color-secondary);
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loggedoutbutton:hover {
+    color: var(--font-color-primary);
+}

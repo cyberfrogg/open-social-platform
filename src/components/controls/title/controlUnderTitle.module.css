@@ -1,0 +1,9 @@
+.title {
+    color: var(--font-color-secondary);
+    margin-bottom: 20px;
+    margin-top: -12px;
+}
+
+.title.centered {
+    text-align: center;
+}

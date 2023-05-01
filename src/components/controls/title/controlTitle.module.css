@@ -1,0 +1,8 @@
+.title {
+    font-size: var(--font-size-panel-title);
+    margin-bottom: 20px;
+}
+
+.title.centered {
+    text-align: center;
+}

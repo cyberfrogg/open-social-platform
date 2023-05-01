@@ -1,0 +1,20 @@
+.undercontent {
+    width: 100%;
+    font-size: var(--font-size-undercontent);
+    margin-top: 4px;
+    color: var(--font-color-secondary);
+}
+
+.undercontent>* {
+    font-size: var(--font-size-undercontent);
+    color: var(--font-color-secondary);
+}
+
+.undercontent>a {
+    color: var(--font-color-url);
+    text-decoration: none;
+}
+
+.undercontent>a:hover {
+    text-decoration: underline;
+}

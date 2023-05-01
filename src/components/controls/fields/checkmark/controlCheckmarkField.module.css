@@ -1,0 +1,55 @@
+.fieldRootClass {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    grid-gap: 10px;
+    cursor: pointer;
+}
+
+.errorspace {
+    font-size: var(--font-size-undercontent);
+    color: var(--font-color-error);
+    margin-bottom: 20px;
+    margin-left: calc(17px + 10px);
+    margin-top: 4px;
+}
+
+.checkmarkwrapper {
+    margin-top: 4px;
+    width: 15px;
+    height: 15px;
+}
+
+.checkmark {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.checkmarkCheckedState {
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    background: var(--background-checkmark);
+    border-radius: 4px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+}
+
+.checkmarkCheckedState svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+}
+
+.errortext {
+    color: var(--pallete-color-red);
+}
+
+.fieldRootClass.isChecked .checkmarkCheckedState svg {
+    opacity: 1 !important;
+}
