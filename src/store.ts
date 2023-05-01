@@ -4,6 +4,7 @@ import authRegisterReducer from './slices/auth/authRegisterSlice';
 import authEmailVerifyReducer from './slices/auth/authEmailVerifySlice';
 import authSessionReducer from './slices/auth/authSessionSlice';
 import languageReducer from './slices/languageSlice';
+import profileMenuReducer from './slices/parts/profileMenuSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         authRegister: authRegisterReducer,
         authEmailVerify: authEmailVerifyReducer,
         authSession: authSessionReducer,
-        language: languageReducer
+        language: languageReducer,
+        profileMenu: profileMenuReducer
     },
 })
 

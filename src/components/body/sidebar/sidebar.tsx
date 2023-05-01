@@ -12,6 +12,10 @@ interface ISideBarProps {
 
 export const SideBar: React.FC<ISideBarProps> = (props) => {
     const language = useSelector((state: RootState) => state.language.language);
+    const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+    const session = useSelector((state: RootState) => state.authSession.session);
+
+    const isLoggedIn = isSessionCollected && session != undefined;
 
     return (
         <aside className={classes.sidebar}>
@@ -20,12 +24,17 @@ export const SideBar: React.FC<ISideBarProps> = (props) => {
                     <SideBarButton href="/" iconType='home'>
                         {GetTextTranslation("PART_SIDEBAR_HOME", language)}
                     </SideBarButton>
-                    <SideBarButton href="/auth/signin" iconType='empty'>
-                        {GetTextTranslation("PART_SIDEBAR_SIGNIN", language)}
-                    </SideBarButton>
-                    <SideBarButton href="/auth/join" iconType='empty'>
-                        {GetTextTranslation("PART_SIDEBAR_JOIN", language)}
-                    </SideBarButton>
+
+                    {!isLoggedIn ? (
+                        <>
+                            <SideBarButton href="/auth/signin" iconType='empty'>
+                                {GetTextTranslation("PART_SIDEBAR_SIGNIN", language)}
+                            </SideBarButton>
+                            <SideBarButton href="/auth/join" iconType='empty'>
+                                {GetTextTranslation("PART_SIDEBAR_JOIN", language)}
+                            </SideBarButton>
+                        </>
+                    ) : <></>}
                 </ul>
             </nav>
         </aside>

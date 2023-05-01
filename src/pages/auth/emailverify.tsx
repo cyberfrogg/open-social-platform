@@ -85,6 +85,7 @@ export default function EmailVerify() {
                 ApplyClientSessionData(response.data);
 
                 router.push(redirectPageAfterSuccess);
+                router.reload();
             }
 
             dispatch(setIsButtonEnabled(true));

@@ -1,9 +1,8 @@
 .sidebar {
-    width: calc(100% - 20px);
-    padding: 0 10px;
+    width: calc(100% - 0px);
     min-height: 200px;
     box-sizing: content-box;
-    padding-top: 10px;
+    padding-top: 30px;
 }
 
 .block {

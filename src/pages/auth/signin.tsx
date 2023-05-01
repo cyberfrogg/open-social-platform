@@ -100,6 +100,7 @@ export default function SignIn() {
                 console.log("Login success");
                 ApplyClientSessionData(response.data);
                 router.push(process.env.NEXT_PUBLIC_WEBSITE_URL as string);
+                router.reload();
             }
         }
     }
