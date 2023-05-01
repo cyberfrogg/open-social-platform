@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import React from 'react';
 import classes from "./header.module.css";
+import { ProfileMenu } from '../parts/profilemenu/profilemenu';
 
 interface IHeaderProps {
-    
+
 }
 
 export const Header: React.FC<IHeaderProps> = (props) => {
@@ -18,7 +19,7 @@ export const Header: React.FC<IHeaderProps> = (props) => {
 
                     </div>
                     <div className={classes.rightbar}>
-
+                        <ProfileMenu />
                     </div>
                 </div>
             </header>

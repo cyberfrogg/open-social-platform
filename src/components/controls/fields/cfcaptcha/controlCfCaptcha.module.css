@@ -1,0 +1,20 @@
+.fieldroot {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.field {
+    width: 300px;
+    height: 69px;
+    background: var(--background-dark);
+}
+
+.fieldroot .errorspace {
+    display: none;
+    font-size: var(--font-size-undercontent);
+    color: var(--font-color-error);
+}
+
+.fieldroot.fielderror .errorspace {
+    display: block;
+}

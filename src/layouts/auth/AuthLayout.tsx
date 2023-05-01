@@ -17,9 +17,6 @@ export const AuthLayout: React.FC<IAuthLayoutProps> = (props) => {
                 <title>{props.title + " - " + process.env.NEXT_PUBLIC_WEBSITE_NAME}</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
-            <div className={classes.backgroundimage}>
-                <Image loading='lazy' className={classes.image} src={authImageSrc} alt="Authorize on platform background image" fill quality={100} />
-            </div>
             <div className={classes.container}>
                 {props.children}
             </div>

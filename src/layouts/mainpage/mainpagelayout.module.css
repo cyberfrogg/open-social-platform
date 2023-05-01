@@ -1,17 +1,19 @@
-.mainpagelayout{
+.mainpagelayout {
     width: 100%;
 }
-.contentsplit{
+
+.contentsplit {
     width: calc(100% - 40px);
     min-height: calc(100vh - 50px);
     padding: 0 0px;
-    max-width: 1600px;
+    max-width: 1164px;
     display: grid;
-    grid-template-columns: 240px 1fr 240px;
+    grid-template-columns: 210px 1fr 240px;
+    grid-gap: 30px;
     margin: 0 auto;
-    background: var(--pallete-primary-color);
 }
-.maincontent{
+
+.maincontent {
     width: 100%;
     min-height: calc(100vh - 50px);
 }
