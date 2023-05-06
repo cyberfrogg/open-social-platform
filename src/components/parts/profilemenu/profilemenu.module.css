@@ -4,6 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .profilemenu:hover .username p {
@@ -50,11 +51,37 @@
 .dropdownbutton {
     background: none;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .dropdownbutton svg {
     stroke: var(--font-color-secondary);
 }
+
+.actionslist {
+    width: calc(100% - 20px);
+    min-height: 20px;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 10px;
+    background: var(--background-panel);
+    border: var(--outline-panel);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.actionlistul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+
+
+
+
 
 
 

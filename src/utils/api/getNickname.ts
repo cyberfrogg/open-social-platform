@@ -1,5 +1,4 @@
 import GetApiUrlForAction from "../shared/getApiUrlForAction";
-import Sleep from '../shared/sleep';
 
 const GetNicknameById = async (userid: number): Promise<string> => {
     const apiUrl = GetApiUrlForAction("user/getnickname");
@@ -27,7 +26,7 @@ const GetNicknameById = async (userid: number): Promise<string> => {
         return fetchedJson.data;
     }
     catch {
-        return "Failed to fetch";
+        return "";
     }
 }
 

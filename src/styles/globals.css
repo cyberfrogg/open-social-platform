@@ -3,6 +3,7 @@
 :root {
     --background-dark: linear-gradient(18.22deg, #1C1C2F 0%, #21213D 100%);
     --background-panel: linear-gradient(77.24deg, #252845 4.08%, #2F2E58 97.25%);
+    --background-panel-hover: linear-gradient(77.24deg, #313455 4.08%, #3F3E73 97.25%);
     --background-input-text: linear-gradient(90deg, #202039 0%, #22223D 58.33%, #202039 100%);
     --background-preload: linear-gradient(90deg, #202039 0%, #22223D 58.33%, #202039 100%);
     --background-button: linear-gradient(84.38deg, #925FFF 9.88%, #B85FFF 93.01%);

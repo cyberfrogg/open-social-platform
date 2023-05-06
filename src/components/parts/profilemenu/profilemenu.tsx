@@ -5,6 +5,8 @@ import { RootState } from '@/store';
 import { GetNicknameById } from '@/utils/api/getNickname';
 import { setIsLoaded, setNickname } from '@/slices/parts/profileMenuSlice';
 import Link from 'next/link';
+import { ProfileMenuButton } from './profilemenubutton';
+import { GetUserUrlFromId } from '@/utils/routing/getuserurl';
 
 export interface IProfileMenuProps {
 
@@ -16,6 +18,7 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
     const session = useSelector((state: RootState) => state.authSession.session);
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
     const nickname = useSelector((state: RootState) => state.profileMenu.nickname);
+    const nicknamePageUrl = GetUserUrlFromId(nickname);
     const isLoaded = useSelector((state: RootState) => state.profileMenu.isLoaded);
 
     useEffect(() => {
@@ -50,12 +53,23 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
                             {nickname}
                         </p>
                     </div>
-                    <button className={classes.dropdownbutton}>
+                    <div className={classes.dropdownbutton}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 16 9" fill="none">
                             <path d="M15 1L8 8L1 1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
-                    </button>
+                    </div>
                 </div>
+
+                <nav className={classes.actionslist}>
+                    <ul className={classes.actionlistul}>
+                        <ProfileMenuButton href={nicknamePageUrl} iconType='profile'>
+                            My profile
+                        </ProfileMenuButton>
+                        <ProfileMenuButton href="/auth/logout" iconType='logout'>
+                            logout
+                        </ProfileMenuButton>
+                    </ul>
+                </nav>
             </div>
         )
     }
