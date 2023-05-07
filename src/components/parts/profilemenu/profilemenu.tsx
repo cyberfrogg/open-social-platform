@@ -3,7 +3,7 @@ import classes from './profilemenu.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { GetNicknameById } from '@/utils/api/getNickname';
-import { setIsLoaded, setNickname } from '@/slices/parts/profileMenuSlice';
+import { setIsLoaded, setIsOpen, setNickname } from '@/slices/parts/profileMenuSlice';
 import Link from 'next/link';
 import { ProfileMenuButton } from './profilemenubutton';
 import { GetUserUrlFromId } from '@/utils/routing/getuserurl';
@@ -17,8 +17,10 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
 
     const session = useSelector((state: RootState) => state.authSession.session);
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+
     const nickname = useSelector((state: RootState) => state.profileMenu.nickname);
     const nicknamePageUrl = GetUserUrlFromId(nickname);
+    const isOpened = useSelector((state: RootState) => state.profileMenu.isOpened);
     const isLoaded = useSelector((state: RootState) => state.profileMenu.isLoaded);
 
     useEffect(() => {
@@ -40,11 +42,21 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
         dispatch(setIsLoaded(true));
     }
 
+    //handle click
+    const onProfileMenuClick = () => {
+        dispatch(setIsOpen(!isOpened));
+    }
+
+    let actionListClass = classes.actionslist;
+    if (isOpened) {
+        actionListClass += " " + classes.open;
+    }
+
     // is logged in
     if (isSessionCollected && session) {
         return (
             <div className={classes.profilemenu}>
-                <div className={classes.container}>
+                <div className={classes.container} onClick={onProfileMenuClick}>
                     <div className={classes.avatar}>
 
                     </div>
@@ -60,7 +72,7 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
                     </div>
                 </div>
 
-                <nav className={classes.actionslist}>
+                <nav className={actionListClass}>
                     <ul className={classes.actionlistul}>
                         <ProfileMenuButton href={nicknamePageUrl} iconType='profile'>
                             My profile
