@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classes from './profilemenu.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { GetNicknameById } from '@/utils/api/getNickname';
+import { GetNicknameById } from '@/utils/api/user/getNickname';
 import { setIsLoaded, setIsOpen, setNickname } from '@/slices/parts/profileMenuSlice';
 import Link from 'next/link';
 import { ProfileMenuButton } from './profilemenubutton';

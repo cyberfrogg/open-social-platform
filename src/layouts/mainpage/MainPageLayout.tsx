@@ -20,9 +20,9 @@ export const MainPageLayout: React.FC<IMainPageLayoutProps> = (props) => {
             <Header />
             <div className={classes.contentsplit}>
                 <SideBar />
-                <div className={classes.maincontent}>
+                <main className={classes.maincontent}>
                     {props.children}
-                </div>
+                </main>
                 <RightBar />
             </div>
         </div>

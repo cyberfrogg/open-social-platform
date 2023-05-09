@@ -1,10 +1,10 @@
-import GetApiUrlForAction from "../shared/getApiUrlForAction";
+import GetApiUrlForAction from "../../shared/getApiUrlForAction";
 
-const GetNicknameById = async (userid: number): Promise<string> => {
-    const apiUrl = GetApiUrlForAction("user/getnickname");
+const GetUserByNickname = async (nickname: string): Promise<number | null> => {
+    const apiUrl = GetApiUrlForAction("user/getuserbynickname");
 
     const payload = {
-        "userid": userid
+        "nickname": nickname
     };
 
     try {
@@ -21,13 +21,14 @@ const GetNicknameById = async (userid: number): Promise<string> => {
         const fetchedJson = await fetchedRequest.json();
 
         if (fetchedJson.success == false)
-            return "";
+            return null;
 
         return fetchedJson.data;
     }
-    catch {
-        return "";
+    catch (e) {
+        console.error(e);
+        return null;
     }
 }
 
-export { GetNicknameById }
+export { GetUserByNickname }
