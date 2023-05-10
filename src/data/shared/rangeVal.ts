@@ -30,6 +30,18 @@ class RangeVal {
 
         return true;
     }
+
+    Clamp = (value: number): number => {
+        if (value <= this.min) {
+            return this.min;
+        }
+
+        if (value >= this.max) {
+            return this.max;
+        }
+
+        return value;
+    }
 }
 
 export default RangeVal;
