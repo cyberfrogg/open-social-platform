@@ -32,6 +32,10 @@ class RangeVal {
     }
 
     Clamp = (value: number): number => {
+        if (isNaN(value)) {
+            return this.min;
+        }
+
         if (value <= this.min) {
             return this.min;
         }
