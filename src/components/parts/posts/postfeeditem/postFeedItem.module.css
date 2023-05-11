@@ -13,7 +13,7 @@
     margin-bottom: 20px;
     display: grid;
     grid-template-columns: 40px 1fr;
-    grid-gap: 20px;
+    grid-gap: 10px;
 }
 
 .author .avatar {
@@ -22,4 +22,19 @@
     border-radius: 100%;
     background: var(--background-input-text);
     border: var(--outline-panel);
+}
+
+.author .authornicknamecontainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.author .authornicknamecontainer .nickname {
+    color: var(--font-color-primary);
+    font-size: 15px;
+}
+
+.author .authornicknamecontainer .postdate {
+    color: var(--font-color-secondary);
 }

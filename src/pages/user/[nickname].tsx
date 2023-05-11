@@ -36,7 +36,7 @@ const UserPage: React.FC<IUserPageProps> = (props) => {
     return (
         <>
             <div className="pagecontainer">
-                <MainPageLayout title={"User "}>
+                <MainPageLayout title={props.nicknameReq + " User"}>
                     <ProfilePanel
                         nickname={props.nicknameReq}
                         profileDescription={props.profileDescription}
@@ -47,7 +47,7 @@ const UserPage: React.FC<IUserPageProps> = (props) => {
                                 return (
                                     <PostFeedItem
                                         key={post.ID}
-                                        authorid={post.AuthorID}
+                                        post={post}
                                     >
                                         <PostContent content={post.Content} />
                                     </PostFeedItem>
