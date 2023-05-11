@@ -24,6 +24,8 @@
     --font-color-primary: #EDEAF7;
     --font-color-secondary: #8685C8;
     --font-color-url: #8D65FF;
+    --font-color-paragraphurl: #8D65FF;
+    --font-color-paragraphurl-filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5));
     --font-color-inputtext-placeholder: #49407E;
     --font-color-error: rgb(238, 77, 71);
 }
