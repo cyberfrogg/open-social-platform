@@ -1,6 +1,5 @@
 import React from 'react';
 import classes from './postsFeed.module.css'
-import { IPostFeedItemProps } from '@/components/parts/posts/postfeeditem/postFeedItem';
 
 interface IPostsFeedProps {
     children: React.ReactNode

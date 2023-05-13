@@ -1,4 +1,6 @@
 import { PostsFeed } from "@/components/body/postsfeed/postsFeed";
+import { GenericSpacer } from "@/components/grid/spacers/genericspacer";
+import { CreateNewPostPanel } from "@/components/parts/posts/createnewpostpanel/createnewpostpanel";
 import { PostContent } from "@/components/parts/posts/postcontent/postContent";
 import { PostFeedItem } from "@/components/parts/posts/postfeeditem/postFeedItem";
 import { ProfilePanel } from "@/components/parts/profilepanel/profilepanel";
@@ -37,10 +39,14 @@ const UserPage: React.FC<IUserPageProps> = (props) => {
         <>
             <div className="pagecontainer">
                 <MainPageLayout title={props.nicknameReq + " User"}>
+                    <GenericSpacer height={30} />
                     <ProfilePanel
                         nickname={props.nicknameReq}
                         profileDescription={props.profileDescription}
                     />
+                    <GenericSpacer height={10} />
+                    <CreateNewPostPanel />
+                    <GenericSpacer height={20} />
                     <PostsFeed>
                         {
                             props.posts.map((post: PostData) => {
