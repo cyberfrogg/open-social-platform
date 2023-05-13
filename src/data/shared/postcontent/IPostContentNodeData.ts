@@ -1,5 +1,8 @@
+import PostContentEditorNodeData from "./PostContentEditorNodeData";
+
 interface IPostContentNodeData {
-    type: string
+    type: string,
+    editor: PostContentEditorNodeData
 }
 
 export default IPostContentNodeData;

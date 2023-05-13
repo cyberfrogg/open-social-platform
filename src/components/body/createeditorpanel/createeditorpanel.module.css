@@ -1,0 +1,116 @@
+.createeditorpanel {
+    width: 100%;
+}
+
+.node {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nodeitem {
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    border: var(--outline-panel);
+    border-color: transparent;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: 0.4s;
+    opacity: 0;
+    animation: nodeitemshow 0.3s ease-out forwards;
+    position: relative;
+}
+
+.nodeitem:hover {
+    border: var(--outline-panel);
+    transition: 0.2s;
+}
+
+.nodeitem.selected {
+    border: var(--outline-panel);
+    transition: 0.2s;
+}
+
+.nodeeditor {
+    opacity: 0;
+    pointer-events: none;
+    height: 40px;
+    min-width: 40px;
+    background: var(--background-panel);
+    border: var(--outline-panel);
+    border-radius: 16px;
+    position: absolute;
+    right: -20px;
+    top: -30px;
+}
+
+.nodeitem.selected .nodeeditor {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+
+.addelementcontainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addelementcontainer .line {
+    height: 40px;
+    width: 2px;
+    min-width: 1px;
+    margin: 0 10px;
+    background: var(--outline-panel-color);
+}
+
+.addelementcontainer .button {
+    width: 100%;
+    height: 60px;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+}
+
+.addelementcontainer .button svg {
+    margin-right: 10px;
+}
+
+.addelementcontainer .button p {
+    color: var(--font-color-secondary);
+    font-weight: 500;
+}
+
+.addelementcontainer .button:hover {
+    background: var(--background-panel);
+}
+
+.addelementcontainer .button:hover p {
+    color: var(--font-color-primary)
+}
+
+.addelementcontainer .button:hover svg * {
+    stroke: var(--font-color-primary) !important;
+}
+
+
+
+@keyframes nodeitemshow {
+    from {
+        transform: translate(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0px);
+        opacity: 1;
+    }
+}

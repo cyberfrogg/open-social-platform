@@ -5,6 +5,7 @@ import authEmailVerifyReducer from './slices/auth/authEmailVerifySlice';
 import authSessionReducer from './slices/auth/authSessionSlice';
 import languageReducer from './slices/languageSlice';
 import profileMenuReducer from './slices/parts/profileMenuSlice';
+import createEditorReducer from './slices/createEditorSlice';
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         authEmailVerify: authEmailVerifyReducer,
         authSession: authSessionReducer,
         language: languageReducer,
-        profileMenu: profileMenuReducer
+        profileMenu: profileMenuReducer,
+        createEditor: createEditorReducer,
     },
 })
 
