@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './createeditorpanel.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { addEditorNodeToEnd, changeParagraphInnerNode, deselectAll, selectNode } from '@/slices/createEditorSlice';
+import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteParagraphInnerNode, deselectAll, selectNode, selectParagraphInnerNode } from '@/slices/createEditorSlice';
 import IPostContentNodeData from '../../../data/shared/postcontent/IPostContentNodeData';
 import PostContentNodeParagraphData from '../../../data/shared/postcontent/nodes/PostContentNodeParagraphData';
 import PostContentNodeImageData from '../../../data/shared/postcontent/nodes/PostContentNodeImageData';
@@ -10,6 +10,7 @@ import PostContentNodeLinkData from '@/data/shared/postcontent/nodes/PostContent
 import PostContentNodeTextData from '@/data/shared/postcontent/nodes/PostContentNodeTextData';
 import PostContentData from '@/data/shared/postcontent/postContentData';
 import { ContentEditableWithRef } from '../../parts/contenteditablewithref/contentEditableWithRef';
+import Sleep from '@/utils/shared/sleep';
 
 interface ICreateEditorPanelProps {
 
@@ -19,6 +20,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     const dispatch = useDispatch();
     const postContentDataJson = useSelector((state: RootState) => state.createEditor.postContentDataJson);
     const postContentData = JSON.parse(postContentDataJson) as PostContentData;
+    console.log(postContentData);
 
     const OnAddElementClick = (type: string) => {
         console.log("Adding element - " + type);
@@ -41,19 +43,45 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         dispatch(addEditorNodeToEnd(JSON.stringify(newElement)))
     }
 
-    const OnElementSelect = (node: IPostContentNodeData) => {
+    const OnNodeSelect = (node: IPostContentNodeData) => {
         if (!node.editor.isSelected) {
             dispatch(deselectAll());
             dispatch(selectNode(node.editor.index));
         }
     }
 
-    const OnParagraphInnerNodeChange = async (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData, textContent: string) => {
+    const OnParagraphNodeSelect = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
+        if (!innerNode.editor.isSelected) {
+            dispatch(deselectAll());
+            dispatch(selectNode(paragraphNode.editor.index));
+            dispatch(selectParagraphInnerNode(JSON.stringify({ nodeIndex: paragraphNode.editor.index, innerNodeIndex: innerNode.editor.index })));
+        }
+    }
+
+    const OnParagraphInnerNodeChange = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData, textContent: string) => {
         innerNode.text = textContent;
-        console.log(textContent);
         dispatch(changeParagraphInnerNode(JSON.stringify(paragraphNode)));
     }
 
+    const OnParagraphInnerNodeDelete = async (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
+        dispatch(deleteParagraphInnerNode(JSON.stringify({ nodeIndex: paragraphNode.editor.index, innerNodeIndex: innerNode.editor.index })));
+
+        await Sleep(100); // dispatch works like shit, so we need this sleep
+
+        if (paragraphNode.innerNodes.length <= 1) {
+            let newElement = new PostContentNodeTextData("text", "Text here...");
+            let payload = { nodeIndex: paragraphNode.editor.index, innerNode: newElement };
+            dispatch(addParagraphInnerNode(JSON.stringify(payload)));
+        }
+    }
+
+    const OnParagraphInnerNodeAddLink = async (paragraphNode: PostContentNodeParagraphData) => {
+        let newElement = new PostContentNodeLinkData("link", "Link here", "example.com");
+        newElement.editor.index = paragraphNode.innerNodes.length       // setting editorIndexId to the next index of array
+        let payload = { nodeIndex: paragraphNode.editor.index, innerNode: newElement };
+
+        dispatch(addParagraphInnerNode(JSON.stringify(payload)));
+    }
 
 
 
@@ -61,6 +89,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         switch (node.type) {
             case "paragraph":
                 const paragraphNode = node as PostContentNodeParagraphData;
+
                 return (
                     <div
                         key={node.editor.index}
@@ -87,25 +116,52 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
             case "text":
                 const textNode = innerNode as PostContentNodeTextData;
                 return (
-                    <ContentEditableWithRef
-                        className={classes.paragraphinput}
-                        key={innerNode.editor.index}
-                        value={textNode.text}
-                        onChange={(innerText: string) => {
-                            OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
-                        }}
-                    />
+                    <React.Fragment key={innerNode.editor.index}>
+                        <div className={classes.editorpanel + " " + (textNode.editor.isSelected ? classes.selected : "")}>
+                            <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeAddLink(paragraphNode) }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" style={{ transform: "translateY(2px)" }} width="19" height="19" viewBox="0 0 24 24" fill="none">
+                                    <g id="Interface / Link">
+                                        <path id="Vector" d="M9.1718 14.8288L14.8287 9.17192M7.05086 11.293L5.63664 12.7072C4.07455 14.2693 4.07409 16.8022 5.63619 18.3643C7.19829 19.9264 9.7317 19.9259 11.2938 18.3638L12.7065 16.9498M11.2929 7.05L12.7071 5.63579C14.2692 4.07369 16.8016 4.07397 18.3637 5.63607C19.9258 7.19816 19.9257 9.73085 18.3636 11.2929L16.9501 12.7071" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </g>
+                                </svg>
+                            </button>
+                            <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeDelete(paragraphNode, textNode) }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="16" viewBox="0 0 18 20" fill="none">
+                                    <path d="M11 8V15M7 8V15M3 4V15.8C3 16.9201 3 17.4798 3.21799 17.9076C3.40973 18.2839 3.71547 18.5905 4.0918 18.7822C4.5192 19 5.07899 19 6.19691 19H11.8031C12.921 19 13.48 19 13.9074 18.7822C14.2837 18.5905 14.5905 18.2839 14.7822 17.9076C15 17.4802 15 16.921 15 15.8031V4M3 4H5M3 4H1M5 4H13M5 4C5 3.06812 5 2.60241 5.15224 2.23486C5.35523 1.74481 5.74432 1.35523 6.23438 1.15224C6.60192 1 7.06812 1 8 1H10C10.9319 1 11.3978 1 11.7654 1.15224C12.2554 1.35523 12.6447 1.74481 12.8477 2.23486C12.9999 2.6024 13 3.06812 13 4M13 4H15M15 4H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                        <ContentEditableWithRef
+                            className={classes.paragraphinput + " " + (textNode.editor.isSelected ? classes.selected : "")}
+                            value={textNode.text}
+                            onClick={(e: any) => { OnParagraphNodeSelect(paragraphNode, innerNode); }}
+                            onChange={(innerText: string) => {
+                                OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
+                            }}
+                        />
+                    </React.Fragment>
                 )
             case "link":
                 const linkNode = innerNode as PostContentNodeLinkData;
                 return (
-                    <ContentEditableWithRef
-                        className={classes.paragraphinput}
-                        key={innerNode.editor.index}
-                        onChange={(innerText: string) => {
-                            OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
-                        }}
-                    />
+                    <React.Fragment key={innerNode.editor.index}>
+                        <div className={classes.editorpanel + " " + (linkNode.editor.isSelected ? classes.selected : "")}>
+                            <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeDelete(paragraphNode, linkNode) }}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="16" viewBox="0 0 18 20" fill="none">
+                                    <path d="M11 8V15M7 8V15M3 4V15.8C3 16.9201 3 17.4798 3.21799 17.9076C3.40973 18.2839 3.71547 18.5905 4.0918 18.7822C4.5192 19 5.07899 19 6.19691 19H11.8031C12.921 19 13.48 19 13.9074 18.7822C14.2837 18.5905 14.5905 18.2839 14.7822 17.9076C15 17.4802 15 16.921 15 15.8031V4M3 4H5M3 4H1M5 4H13M5 4C5 3.06812 5 2.60241 5.15224 2.23486C5.35523 1.74481 5.74432 1.35523 6.23438 1.15224C6.60192 1 7.06812 1 8 1H10C10.9319 1 11.3978 1 11.7654 1.15224C12.2554 1.35523 12.6447 1.74481 12.8477 2.23486C12.9999 2.6024 13 3.06812 13 4M13 4H15M15 4H17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                        <ContentEditableWithRef
+                            className={classes.linkinput + " " + (linkNode.editor.isSelected ? classes.selected : "")}
+                            key={innerNode.editor.index}
+                            value={linkNode.text}
+                            onClick={(e: any) => { OnParagraphNodeSelect(paragraphNode, innerNode); }}
+                            onChange={(innerText: string) => {
+                                OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
+                            }}
+                        />
+                    </React.Fragment>
                 )
             default:
                 break;
@@ -121,11 +177,8 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                             <div
                                 key={node.editor.index}
                                 className={classes.nodeitem + " " + (node.editor.isSelected ? classes.selected : "")}
-                                onClick={() => { OnElementSelect(node) }}
+                                onClick={() => { OnNodeSelect(node) }}
                             >
-                                <nav className={classes.nodeeditor}>
-
-                                </nav>
                                 <div className={classes.nodeContent}>
                                     {RenderPostContentNodeContent(node)}
                                 </div>

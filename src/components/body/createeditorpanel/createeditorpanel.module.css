@@ -17,7 +17,6 @@
     border: var(--outline-panel);
     border-color: transparent;
     margin-bottom: 5px;
-    cursor: pointer;
     transition: 0.4s;
     opacity: 0;
     animation: nodeitemshow 0.3s ease-out forwards;
@@ -40,8 +39,9 @@
 
 .nodeContentParagraph {
     padding: 4px;
-    border-radius: 8px;
+    border-radius: 4px;
     outline: 0 !important;
+    position: relative;
 }
 
 .nodeContentParagraph .paragraphinput {
@@ -50,30 +50,81 @@
     border-bottom: var(--outline-panel);
     width: auto;
     height: auto;
+    padding: 2px;
+    border-radius: 4px;
 
     outline: 0 !important;
+}
+
+.nodeContentParagraph .paragraphinput.selected {
+    border: var(--outline-panel);
 }
 
 .nodeitem.selected .nodeContentParagraph {
     background: var(--background-input-text);
 }
 
-.nodeeditor {
-    opacity: 0;
-    pointer-events: none;
-    height: 40px;
-    min-width: 40px;
-    background: var(--background-panel);
-    border: var(--outline-panel);
-    border-radius: 16px;
-    position: absolute;
-    right: -20px;
-    top: -30px;
+.nodeContentParagraph .linkinput {
+    border: none;
+    background: none;
+    border-bottom: var(--outline-panel);
+    width: auto;
+    height: auto;
+    padding: 2px;
+    border-radius: 4px;
+
+    outline: 0 !important;
+    text-decoration: underline;
+    color: var(--font-color-url);
 }
 
-.nodeitem.selected .nodeeditor {
+.nodeContentParagraph .linkinput.selected {
+    border: var(--outline-panel);
+}
+
+
+.editorpanel {
+    opacity: 0;
+    pointer-events: none;
+    height: 25px;
+    min-width: 40px;
+    background: var(--background-input-text);
+
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom: 0;
+    position: absolute;
+    left: 20px;
+    top: calc(-25px + 1px);
+    overflow: hidden;
+    transition: 0.4s;
+}
+
+.editorpanel.selected {
     opacity: 1;
     pointer-events: all;
+    transition: 0.2s;
+}
+
+.editorpanelbutton {
+    height: 25px;
+    padding: 0 20px;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.editorpanelbutton svg * {
+    stroke: var(--font-color-secondary);
+}
+
+.editorpanelbutton:hover {
+    background: var(--background-panel-hover);
+}
+
+.editorpanelbutton:hover svg * {
+    stroke: var(--font-color-primary);
 }
 
 
