@@ -2,13 +2,14 @@ import React from 'react';
 import classes from './createeditorpanel.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { addEditorNodeToEnd, deselectAll, selectNode } from '@/slices/createEditorSlice';
+import { addEditorNodeToEnd, changeParagraphInnerNode, deselectAll, selectNode } from '@/slices/createEditorSlice';
 import IPostContentNodeData from '../../../data/shared/postcontent/IPostContentNodeData';
 import PostContentNodeParagraphData from '../../../data/shared/postcontent/nodes/PostContentNodeParagraphData';
 import PostContentNodeImageData from '../../../data/shared/postcontent/nodes/PostContentNodeImageData';
 import PostContentNodeLinkData from '@/data/shared/postcontent/nodes/PostContentNodeLinkData';
 import PostContentNodeTextData from '@/data/shared/postcontent/nodes/PostContentNodeTextData';
 import PostContentData from '@/data/shared/postcontent/postContentData';
+import { ContentEditableWithRef } from '../../parts/contenteditablewithref/contentEditableWithRef';
 
 interface ICreateEditorPanelProps {
 
@@ -25,7 +26,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
 
         switch (type) {
             case "paragraph":
-                newElement = new PostContentNodeParagraphData("paragraph", new Array<PostContentNodeTextData | PostContentNodeLinkData>());
+                newElement = new PostContentNodeParagraphData("paragraph", [new PostContentNodeTextData("text", "Text here...")]);
                 break;
             case "image":
                 newElement = new PostContentNodeImageData("image", "Image description here", "https://example.com/")
@@ -41,10 +42,73 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     }
 
     const OnElementSelect = (node: IPostContentNodeData) => {
-        dispatch(deselectAll());
-
         if (!node.editor.isSelected) {
+            dispatch(deselectAll());
             dispatch(selectNode(node.editor.index));
+        }
+    }
+
+    const OnParagraphInnerNodeChange = async (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData, textContent: string) => {
+        innerNode.text = textContent;
+        console.log(textContent);
+        dispatch(changeParagraphInnerNode(JSON.stringify(paragraphNode)));
+    }
+
+
+
+
+    const RenderPostContentNodeContent = (node: IPostContentNodeData) => {
+        switch (node.type) {
+            case "paragraph":
+                const paragraphNode = node as PostContentNodeParagraphData;
+                return (
+                    <div
+                        key={node.editor.index}
+                        className={classes.nodeContentParagraph}
+                    >
+                        {
+                            paragraphNode.innerNodes.map((innerNode) => {
+                                return RenderPostContentInnerParagraphNode(paragraphNode, innerNode);
+                            })
+                        }
+                    </div>
+                )
+            case "image":
+                return (
+                    <p>image</p>
+                )
+            default:
+                break;
+        }
+    }
+
+    const RenderPostContentInnerParagraphNode = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
+        switch (innerNode.type) {
+            case "text":
+                const textNode = innerNode as PostContentNodeTextData;
+                return (
+                    <ContentEditableWithRef
+                        className={classes.paragraphinput}
+                        key={innerNode.editor.index}
+                        value={textNode.text}
+                        onChange={(innerText: string) => {
+                            OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
+                        }}
+                    />
+                )
+            case "link":
+                const linkNode = innerNode as PostContentNodeLinkData;
+                return (
+                    <ContentEditableWithRef
+                        className={classes.paragraphinput}
+                        key={innerNode.editor.index}
+                        onChange={(innerText: string) => {
+                            OnParagraphInnerNodeChange(paragraphNode, innerNode, innerText);
+                        }}
+                    />
+                )
+            default:
+                break;
         }
     }
 
@@ -62,8 +126,8 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                                 <nav className={classes.nodeeditor}>
 
                                 </nav>
-                                <div className={classes.nodeCOntent}>
-                                    Content here
+                                <div className={classes.nodeContent}>
+                                    {RenderPostContentNodeContent(node)}
                                 </div>
                             </div>
                         )
@@ -89,3 +153,5 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         </div>
     );
 }
+
+

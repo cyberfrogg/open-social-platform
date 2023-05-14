@@ -1,5 +1,7 @@
 .createeditorpanel {
     width: 100%;
+    padding: 20px;
+    background: var(--background-panel);
 }
 
 .node {
@@ -30,6 +32,30 @@
 .nodeitem.selected {
     border: var(--outline-panel);
     transition: 0.2s;
+}
+
+.nodeContent {
+    width: 100%;
+}
+
+.nodeContentParagraph {
+    padding: 4px;
+    border-radius: 8px;
+    outline: 0 !important;
+}
+
+.nodeContentParagraph .paragraphinput {
+    border: none;
+    background: none;
+    border-bottom: var(--outline-panel);
+    width: auto;
+    height: auto;
+
+    outline: 0 !important;
+}
+
+.nodeitem.selected .nodeContentParagraph {
+    background: var(--background-input-text);
 }
 
 .nodeeditor {
@@ -90,7 +116,7 @@
 }
 
 .addelementcontainer .button:hover {
-    background: var(--background-panel);
+    background: var(--background-panel-hover);
 }
 
 .addelementcontainer .button:hover p {
