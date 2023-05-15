@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import IPostContentNodeData from '../data/shared/postcontent/IPostContentNodeData';
 import PostContentData from '../data/shared/postcontent/postContentData';
 import PostContentNodeParagraphData from '@/data/shared/postcontent/nodes/PostContentNodeParagraphData';
+import PostContentNodeTextData from '../data/shared/postcontent/nodes/PostContentNodeTextData';
 
 export interface CreateEditorSliceState {
     postContentDataJson: string,
@@ -122,6 +123,53 @@ export const createEditorSlice = createSlice({
 
             state.postContentDataJson = JSON.stringify(postContentData);
         },
+
+        moveParagraphInnerNode: (state, action: PayloadAction<string>) => {
+            let postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
+            const nodeIndex = JSON.parse(action.payload).nodeIndex;
+            const innerNodeIndex = JSON.parse(action.payload).innerNodeIndex;
+            const direction = JSON.parse(action.payload).direction;
+
+            const node = postContentData.nodes.find((node) => { return node.editor.index == nodeIndex }) as PostContentNodeParagraphData;
+            const innerNode = node.innerNodes.find((innerNode) => { return innerNode.editor.index == innerNodeIndex });
+
+            if (node == undefined || innerNode == undefined) {
+                console.error("Failed to move node for index " + action.payload);
+                return;
+            }
+
+            switch (direction) {
+                case "left":
+                    let leftElement = (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index - 1];
+                    if (leftElement == undefined) {
+                        console.log("Failed to move inner node to the left");
+                        return;
+                    }
+
+                    (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index - 1] = (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index];
+                    (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index] = leftElement;
+                    break;
+                case "right":
+                    let rightElement = (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index + 1];
+                    if (rightElement == undefined) {
+                        console.log("Failed to move inner node to the right");
+                        return;
+                    }
+
+                    (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index + 1] = (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index];
+                    (postContentData.nodes[nodeIndex] as PostContentNodeParagraphData).innerNodes[innerNode.editor.index] = rightElement;
+                    break;
+                default:
+                    console.error("Wrong direction to move node: " + direction)
+                    return;
+            }
+
+
+
+            postContentData = FixIndexes(postContentData);
+
+            state.postContentDataJson = JSON.stringify(postContentData);
+        },
     },
 })
 
@@ -152,7 +200,8 @@ export const {
     changeParagraphInnerNode,
     selectParagraphInnerNode,
     deleteParagraphInnerNode,
-    addParagraphInnerNode
+    addParagraphInnerNode,
+    moveParagraphInnerNode
 } = createEditorSlice.actions
 
 export default createEditorSlice.reducer

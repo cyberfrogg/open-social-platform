@@ -97,13 +97,11 @@
     left: 20px;
     top: calc(-25px + 1px);
     overflow: hidden;
-    transition: 0.4s;
 }
 
 .editorpanel.selected {
     opacity: 1;
     pointer-events: all;
-    transition: 0.2s;
 }
 
 .editorpanelbutton {
