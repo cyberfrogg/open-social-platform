@@ -129,7 +129,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
             case "text":
                 const textNode = innerNode as PostContentNodeTextData;
                 return (
-                    <React.Fragment key={innerNode.editor.index}>
+                    <React.Fragment key={innerNode.editor.index + "_" + new Date().getTime()}>
                         <div className={classes.editorpanel + " " + (textNode.editor.isSelected ? classes.selected : "")}>
                             <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeAddLink(paragraphNode) }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" style={{ transform: "translateY(2px)" }} width="19" height="19" viewBox="0 0 24 24" fill="none">
@@ -201,7 +201,6 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                         </div>
                         <ContentEditableWithRef
                             className={classes.linkinput + " " + (linkNode.editor.isSelected ? classes.selected : "")}
-                            key={innerNode.editor.index + "_" + new Date().getTime()}
                             value={linkNode.text}
                             onClick={(e: any) => { OnParagraphNodeSelect(paragraphNode, innerNode); }}
                             onChange={(innerText: string) => {
