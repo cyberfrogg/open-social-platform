@@ -21,16 +21,6 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     const postContentDataJson = useSelector((state: RootState) => state.createEditor.postContentDataJson);
     const postContentData = JSON.parse(postContentDataJson) as PostContentData;
 
-    console.log("-----------------------");
-    if (postContentData != undefined) {
-        if (postContentData.nodes[0] != undefined) {
-            (postContentData.nodes[0] as PostContentNodeParagraphData).innerNodes.forEach((item) => {
-                console.log(item.text)
-            });
-        }
-    }
-    console.log("-----------------------");
-
     const OnAddElementClick = (type: string) => {
         console.log("Adding element - " + type);
         let newElement: IPostContentNodeData;
