@@ -222,12 +222,10 @@
 
 @keyframes nodeitemshow {
     from {
-        transform: translate(-30px);
         opacity: 0;
     }
 
     to {
-        transform: translate(0px);
         opacity: 1;
     }
 }

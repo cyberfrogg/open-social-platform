@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './createeditorpanel.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveParagraphInnerNode, selectNode, selectParagraphInnerNode } from '@/slices/createEditorSlice';
+import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveNode, moveParagraphInnerNode, selectNode, selectParagraphInnerNode } from '@/slices/createEditorSlice';
 import IPostContentNodeData from '../../../data/shared/postcontent/IPostContentNodeData';
 import PostContentNodeParagraphData from '../../../data/shared/postcontent/nodes/PostContentNodeParagraphData';
 import PostContentNodeImageData from '../../../data/shared/postcontent/nodes/PostContentNodeImageData';
@@ -53,6 +53,12 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
 
     const OnNodeRemove = (node: IPostContentNodeData) => {
         dispatch(deleteNode(node.editor.index));
+    }
+
+    const OnNodeMove = async (node: IPostContentNodeData, dir: string) => {
+        let payload = { nodeIndex: node.editor.index, direction: dir };
+
+        dispatch(moveNode(JSON.stringify(payload)));
     }
 
     const OnParagraphNodeSelect = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
@@ -124,7 +130,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                 )
             case "image":
                 return (
-                    <p>image</p>
+                    <p>Images are not available yet</p>
                 )
             default:
                 break;
@@ -228,19 +234,19 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                     postContentData.nodes.map((node) => {
                         return (
                             <div
-                                key={node.editor.index}
+                                key={node.editor.index + "_" + node.editor.hash}
                                 className={classes.nodeitem + " " + (node.editor.isSelected ? classes.selected : "")}
                                 onClick={() => { OnNodeSelect(node) }}
                             >
                                 <nav className={classes.nodesidenav + " " + (node.editor.isSelected ? classes.selected : "")}>
-                                    <button className={classes.nodesidenavbutton}>
+                                    <button className={classes.nodesidenavbutton} onClick={() => { OnNodeMove(node, "up") }}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ transform: "rotate(90deg) translateY(0px)" }}>
                                             <g>
                                                 <path d="M19 12H5M5 12L11 18M5 12L11 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </g>
                                         </svg>
                                     </button>
-                                    <button className={classes.nodesidenavbutton}>
+                                    <button className={classes.nodesidenavbutton} onClick={() => { OnNodeMove(node, "down") }}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ transform: "rotate(-90deg) translateY(0px)" }}>
                                             <g>
                                                 <path d="M19 12H5M5 12L11 18M5 12L11 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

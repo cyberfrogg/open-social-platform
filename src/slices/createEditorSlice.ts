@@ -48,6 +48,51 @@ export const createEditorSlice = createSlice({
             state.postContentDataJson = JSON.stringify(postContentData);
         },
 
+        moveNode: (state, action: PayloadAction<string>) => {
+            let postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
+            const nodeIndex = JSON.parse(action.payload).nodeIndex;
+            const direction = JSON.parse(action.payload).direction;
+
+            const node = postContentData.nodes.find((node) => { return node.editor.index == nodeIndex }) as PostContentNodeParagraphData;
+
+            if (node == undefined) {
+                console.error("Failed to move node for index " + action.payload);
+                return;
+            }
+
+            switch (direction) {
+                case "up":
+                    let leftElement = postContentData.nodes[nodeIndex - 1];
+                    if (leftElement == undefined) {
+                        console.log("Failed to move node to the up");
+                        return;
+                    }
+
+                    postContentData.nodes[node.editor.index - 1] = postContentData.nodes[node.editor.index];
+                    postContentData.nodes[node.editor.index] = leftElement;
+                    break;
+                case "down":
+                    let rightElement = postContentData.nodes[nodeIndex + 1];
+                    if (rightElement == undefined) {
+                        console.log("Failed to move node to the down");
+                        return;
+                    }
+
+                    postContentData.nodes[node.editor.index + 1] = postContentData.nodes[node.editor.index];
+                    postContentData.nodes[node.editor.index] = rightElement;
+                    break;
+                default:
+                    console.error("Wrong direction to move node: " + direction)
+                    return;
+            }
+
+
+
+            postContentData = FixIndexes(postContentData);
+
+            state.postContentDataJson = JSON.stringify(postContentData);
+        },
+
         selectParagraphInnerNode: (state, action: PayloadAction<string>) => {
             const postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
             const nodeIndex = JSON.parse(action.payload).nodeIndex;
@@ -208,12 +253,13 @@ export const {
     addEditorNodeToEnd,
     selectNode,
     deselectAll,
+    deleteNode,
+    moveNode,
     changeParagraphInnerNode,
     selectParagraphInnerNode,
     deleteParagraphInnerNode,
     addParagraphInnerNode,
     moveParagraphInnerNode,
-    deleteNode
 } = createEditorSlice.actions
 
 export default createEditorSlice.reducer
