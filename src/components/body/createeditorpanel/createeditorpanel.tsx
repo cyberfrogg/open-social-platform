@@ -11,6 +11,7 @@ import PostContentNodeTextData from '@/data/shared/postcontent/nodes/PostContent
 import PostContentData from '@/data/shared/postcontent/postContentData';
 import { ContentEditableWithRef } from '../../parts/contenteditablewithref/contentEditableWithRef';
 import Sleep from '@/utils/shared/sleep';
+import { GenerateRandomString } from '@/data/shared/stringutils';
 
 interface ICreateEditorPanelProps {
 
@@ -38,6 +39,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         }
 
         newElement.editor.index = postContentData.nodes.length;    // setting editorIndexId to the next index of array
+        newElement.editor.hash = GenerateRandomString(128);
 
         dispatch(addEditorNodeToEnd(JSON.stringify(newElement)))
     }
@@ -81,6 +83,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     const OnParagraphInnerNodeAddLink = async (paragraphNode: PostContentNodeParagraphData) => {
         let newElement = new PostContentNodeLinkData("link", "Link here", "example.com");
         newElement.editor.index = paragraphNode.innerNodes.length       // setting editorIndexId to the next index of array
+        newElement.editor.hash = GenerateRandomString(128);
         let payload = { nodeIndex: paragraphNode.editor.index, innerNode: newElement };
 
         dispatch(addParagraphInnerNode(JSON.stringify(payload)));
@@ -89,6 +92,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     const OnParagraphInnerNodeAddText = async (paragraphNode: PostContentNodeParagraphData) => {
         let newElement = new PostContentNodeTextData("text", "Text here");
         newElement.editor.index = paragraphNode.innerNodes.length       // setting editorIndexId to the next index of array
+        newElement.editor.hash = GenerateRandomString(128);
         let payload = { nodeIndex: paragraphNode.editor.index, innerNode: newElement };
 
         dispatch(addParagraphInnerNode(JSON.stringify(payload)));
@@ -132,7 +136,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
             case "text":
                 const textNode = innerNode as PostContentNodeTextData;
                 return (
-                    <React.Fragment key={innerNode.editor.index + "_" + new Date().getTime()}>
+                    <React.Fragment key={innerNode.editor.index + "_" + innerNode.editor.hash}>
                         <div className={classes.editorpanel + " " + (textNode.editor.isSelected ? classes.selected : "")}>
                             <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeAddLink(paragraphNode) }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" style={{ transform: "translateY(2px)" }} width="19" height="19" viewBox="0 0 24 24" fill="none">
@@ -175,7 +179,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                 const linkNode = innerNode as PostContentNodeLinkData;
                 return (
                     // Why "new Date().getTime()" next to all keys of "ContentEditableWithRef" component? Why react is shit? https://stackoverflow.com/questions/30242530/dangerouslysetinnerhtml-doesnt-update-during-render
-                    <React.Fragment key={innerNode.editor.index + "_" + new Date().getTime()}>
+                    <React.Fragment key={innerNode.editor.index + "_" + innerNode.editor.hash}>
                         <div className={classes.editorpanel + " " + (linkNode.editor.isSelected ? classes.selected : "")}>
                             <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeAddText(paragraphNode) }} style={{ transform: "rotate(0deg) translateY(-2px)" }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 14 16" fill="none">
