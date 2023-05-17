@@ -126,6 +126,48 @@
 }
 
 
+.nodesidenav {
+    opacity: 0;
+    pointer-events: none;
+    width: calc(30px + 2px);
+    position: absolute;
+    background: var(--background-panel);
+    border-radius: 8px;
+    border: var(--outline-panel);
+    top: 0;
+    right: calc(-30px - 20px - 10px);
+    overflow: hidden;
+    min-height: calc(30px + 30px + 30px + 0px);
+    z-index: 1000;
+}
+
+.nodesidenav.selected {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.nodesidenavbutton {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nodesidenavbutton svg * {
+    stroke: var(--font-color-secondary);
+}
+
+.nodesidenavbutton:hover {
+    background: var(--background-panel-hover);
+}
+
+.nodesidenavbutton:hover svg * {
+    stroke: var(--font-color-primary);
+}
 
 .addelementcontainer {
     width: 100%;

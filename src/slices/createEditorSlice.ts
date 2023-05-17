@@ -37,6 +37,17 @@ export const createEditorSlice = createSlice({
             state.postContentDataJson = JSON.stringify(postContentData);
         },
 
+        deleteNode: (state, action: PayloadAction<number>) => {
+            let postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
+            const nodeIndex = action.payload;
+
+            postContentData.nodes.splice(nodeIndex, 1);
+
+            postContentData = FixIndexes(postContentData);
+
+            state.postContentDataJson = JSON.stringify(postContentData);
+        },
+
         selectParagraphInnerNode: (state, action: PayloadAction<string>) => {
             const postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
             const nodeIndex = JSON.parse(action.payload).nodeIndex;
@@ -201,7 +212,8 @@ export const {
     selectParagraphInnerNode,
     deleteParagraphInnerNode,
     addParagraphInnerNode,
-    moveParagraphInnerNode
+    moveParagraphInnerNode,
+    deleteNode
 } = createEditorSlice.actions
 
 export default createEditorSlice.reducer
