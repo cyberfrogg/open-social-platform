@@ -4,10 +4,15 @@
     background: var(--background-panel);
 }
 
-.node {
+.title {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+}
+
+.titleinput {}
+
+.nodegrid {
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 .nodeitem {

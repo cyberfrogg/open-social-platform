@@ -229,7 +229,10 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
 
     return (
         <div className={classes.createeditorpanel}>
-            <div className={classes.node}>
+            <div className={classes.title}>
+                <input className={classes.titleinput} />
+            </div>
+            <div className={classes.nodegrid}>
                 {
                     postContentData.nodes.map((node) => {
                         return (

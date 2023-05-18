@@ -3,7 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import IPostContentNodeData from '../data/shared/postcontent/IPostContentNodeData';
 import PostContentData from '../data/shared/postcontent/postContentData';
 import PostContentNodeParagraphData from '@/data/shared/postcontent/nodes/PostContentNodeParagraphData';
-import PostContentNodeTextData from '../data/shared/postcontent/nodes/PostContentNodeTextData';
 
 export interface CreateEditorSliceState {
     postContentDataJson: string,

@@ -4,6 +4,9 @@ import { GetNicknameById } from '@/utils/api/user/getNickname';
 import GetDateDifference from '@/utils/shared/dateDifference';
 import PostData from '@/data/post/PostData';
 import FormatDateAgo from '@/utils/shared/dateFormat';
+import Link from 'next/link';
+import { GetUserUrlFromNickname } from '@/utils/routing/getuserurl';
+import { GetPostUrlFromSlugAndId } from '@/utils/routing/getposturl';
 
 export interface IPostFeedItemProps {
     post: PostData,
@@ -28,14 +31,21 @@ export const PostFeedItem: React.FC<IPostFeedItemProps> = (props) => {
 
     return (
         <article className={classes.postitem}>
-            <div className={classes.author}>
-                <div className={classes.avatar}>
+            <div className={classes.topinfo}>
+                <Link className={classes.author} href={GetUserUrlFromNickname(authorNickname)}>
+                    <div className={classes.avatar}>
 
-                </div>
-                <div className={classes.authornicknamecontainer}>
-                    <p className={classes.nickname}>{authorNickname}</p>
-                    <time className={classes.postdate}>{postDateText}</time>
-                </div>
+                    </div>
+                    <div className={classes.authornicknamecontainer}>
+                        <p className={classes.nickname}>{authorNickname}</p>
+                    </div>
+                </Link>
+                <time className={classes.postdate}>{postDateText}</time>
+            </div>
+            <div className={classes.title}>
+                <Link href={GetPostUrlFromSlugAndId(props.post.ID, props.post.Slug)} className={classes.tilteurl}>
+                    <h2 className={classes.tiltetext}>{props.post.Title}</h2>
+                </Link>
             </div>
             <div className={classes.content}>
                 {props.children}

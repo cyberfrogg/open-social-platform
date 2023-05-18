@@ -6,7 +6,7 @@ import { GetNicknameById } from '@/utils/api/user/getNickname';
 import { setIsLoaded, setIsOpen, setNickname } from '@/slices/parts/profileMenuSlice';
 import Link from 'next/link';
 import { ProfileMenuButton } from './profilemenubutton';
-import { GetUserUrlFromId } from '@/utils/routing/getuserurl';
+import { GetUserUrlFromNickname } from '@/utils/routing/getuserurl';
 
 export interface IProfileMenuProps {
 
@@ -19,7 +19,7 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
 
     const nickname = useSelector((state: RootState) => state.profileMenu.nickname);
-    const nicknamePageUrl = GetUserUrlFromId(nickname);
+    const nicknamePageUrl = GetUserUrlFromNickname(nickname);
     const isOpened = useSelector((state: RootState) => state.profileMenu.isOpened);
     const isLoaded = useSelector((state: RootState) => state.profileMenu.isLoaded);
 

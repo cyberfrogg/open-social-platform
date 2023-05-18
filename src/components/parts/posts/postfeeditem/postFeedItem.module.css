@@ -7,18 +7,23 @@
     margin-bottom: 20px;
 }
 
+.topinfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .author {
-    width: 100%;
-    height: 40px;
-    margin-bottom: 20px;
+    height: 20px;
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 20px 1fr;
     grid-gap: 10px;
 }
 
 .author .avatar {
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     border-radius: 100%;
     background: var(--background-input-text);
     border: var(--outline-panel);
@@ -26,15 +31,36 @@
 
 .author .authornicknamecontainer {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .author .authornicknamecontainer .nickname {
     color: var(--font-color-primary);
     font-size: 15px;
+    margin-right: 10px;
 }
 
-.author .authornicknamecontainer .postdate {
+.author:hover .nickname:hover {
+    text-decoration: underline;
+}
+
+.postdate {
     color: var(--font-color-secondary);
+    font-size: 12px;
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.tilteurl {
+    width: 100%;
+}
+
+.tiltetext {
+    width: 100%;
+    font-size: var(--font-size-panel-title);
+    font-weight: var(--font-weight-panel-title);
 }
