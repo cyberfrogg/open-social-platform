@@ -145,6 +145,11 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         dispatch(changeParagraphInnerNode(JSON.stringify(paragraphNode)));
     }
 
+    const OnParagraphLinkUrlNodeChange = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeLinkData, url: string) => {
+        innerNode.url = url;
+        dispatch(changeParagraphInnerNode(JSON.stringify(paragraphNode)));
+    }
+
     const OnParagraphInnerNodeDelete = async (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
         dispatch(deleteParagraphInnerNode(JSON.stringify({ nodeIndex: paragraphNode.editor.index, innerNodeIndex: innerNode.editor.index })));
 
@@ -258,6 +263,14 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                     // Why "new Date().getTime()" next to all keys of "ContentEditableWithRef" component? Why react is shit? https://stackoverflow.com/questions/30242530/dangerouslysetinnerhtml-doesnt-update-during-render
                     <React.Fragment key={innerNode.editor.index + "_" + innerNode.editor.hash}>
                         <div className={classes.editorpanel + " " + (linkNode.editor.isSelected ? classes.selected : "")}>
+                            <div className={classes.editorpanellink}>
+                                <input
+                                    className={classes.input}
+                                    placeholder={"Url here..."}
+                                    value={linkNode.url}
+                                    onChange={(e) => { OnParagraphLinkUrlNodeChange(paragraphNode, linkNode, (e.target as HTMLInputElement).value) }}
+                                />
+                            </div>
                             <button className={classes.editorpanelbutton} onClick={() => { OnParagraphInnerNodeAddText(paragraphNode) }} style={{ transform: "rotate(0deg) translateY(-2px)" }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 14 16" fill="none">
                                     <path d="M5 15H7M7 15H9M7 15V1M7 1H1V2M7 1H13V2" stroke="#8685C8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

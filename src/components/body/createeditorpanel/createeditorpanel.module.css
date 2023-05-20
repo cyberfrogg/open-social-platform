@@ -59,13 +59,16 @@
 .nodeContentParagraph .paragraphinput {
     border: none;
     background: none;
-    border-bottom: var(--outline-panel);
     width: auto;
     height: auto;
     padding: 2px;
     border-radius: 4px;
 
     outline: 0 !important;
+}
+
+.nodeContentParagraph .paragraphinput:hover {
+    border-bottom: var(--outline-panel) !important;
 }
 
 .nodeContentParagraph .paragraphinput.selected {
@@ -135,6 +138,23 @@
 
 .editorpanelbutton:hover svg * {
     stroke: var(--font-color-primary);
+}
+
+.editorpanellink {
+    width: 100px;
+    height: 25px;
+    float: left;
+}
+
+.editorpanellink .input {
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    margin: 2.5px;
+    padding: 0 5px;
+    border: none;
+    background: none;
+    outline: 0 !important;
+    border-radius: 4px;
 }
 
 
