@@ -5,17 +5,49 @@ import PostContentData from '../data/shared/postcontent/postContentData';
 import PostContentNodeParagraphData from '@/data/shared/postcontent/nodes/PostContentNodeParagraphData';
 
 export interface CreateEditorSliceState {
+    title: string,
+    isTitleError: boolean,
+    titleErrorMessage: string,
     postContentDataJson: string,
+    isApiInProcess: boolean,
+    isResponseError: boolean,
+    responseErrorMessage: string
 }
 
 const initialState: CreateEditorSliceState = {
-    postContentDataJson: JSON.stringify(new PostContentData())
+    title: "",
+    isTitleError: false,
+    titleErrorMessage: "",
+    postContentDataJson: JSON.stringify(new PostContentData()),
+    isApiInProcess: false,
+    isResponseError: false,
+    responseErrorMessage: ""
 }
 
 export const createEditorSlice = createSlice({
     name: 'createEditor',
     initialState,
     reducers: {
+        setTitle: (state, action: PayloadAction<string>) => {
+            state.title = action.payload
+        },
+        setIsTitleError: (state, action: PayloadAction<boolean>) => {
+            state.isTitleError = action.payload
+        },
+        setTitleErrorMessage: (state, action: PayloadAction<string>) => {
+            state.titleErrorMessage = action.payload
+        },
+
+        setIsApiInProcess: (state, action: PayloadAction<boolean>) => {
+            state.isApiInProcess = action.payload;
+        },
+        setIsResponseError: (state, action: PayloadAction<boolean>) => {
+            state.isResponseError = action.payload;
+        },
+        setResponseErrorMessage: (state, action: PayloadAction<string>) => {
+            state.responseErrorMessage = action.payload;
+        },
+
         addEditorNodeToEnd: (state, action: PayloadAction<string>) => {
             const postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
             const payload = JSON.parse(action.payload) as IPostContentNodeData;
@@ -259,6 +291,12 @@ export const {
     deleteParagraphInnerNode,
     addParagraphInnerNode,
     moveParagraphInnerNode,
+    setTitle,
+    setIsTitleError,
+    setTitleErrorMessage,
+    setIsApiInProcess,
+    setIsResponseError,
+    setResponseErrorMessage
 } = createEditorSlice.actions
 
 export default createEditorSlice.reducer

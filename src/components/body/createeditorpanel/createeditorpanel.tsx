@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './createeditorpanel.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveNode, moveParagraphInnerNode, selectNode, selectParagraphInnerNode } from '@/slices/createEditorSlice';
+import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveNode, moveParagraphInnerNode, selectNode, selectParagraphInnerNode, setIsApiInProcess, setIsResponseError, setIsTitleError, setResponseErrorMessage, setTitle, setTitleErrorMessage } from '@/slices/createEditorSlice';
 import IPostContentNodeData from '../../../data/shared/postcontent/IPostContentNodeData';
 import PostContentNodeParagraphData from '../../../data/shared/postcontent/nodes/PostContentNodeParagraphData';
 import PostContentNodeImageData from '../../../data/shared/postcontent/nodes/PostContentNodeImageData';
@@ -11,16 +11,87 @@ import PostContentNodeTextData from '@/data/shared/postcontent/nodes/PostContent
 import PostContentData from '@/data/shared/postcontent/postContentData';
 import { ContentEditableWithRef } from '../../parts/contenteditablewithref/contentEditableWithRef';
 import Sleep from '@/utils/shared/sleep';
-import { GenerateRandomString } from '@/data/shared/stringutils';
+import { GenerateRandomString } from '@/utils/shared/stringutils';
+import { ControlTextField } from '@/components/controls/fields/textfield/controlTextField';
+import IsFieldValid from '@/utils/shared/fieldvalidation';
+import { ControlButton } from '@/components/controls/button/control/controlButton';
+import { GenericSpacer } from '@/components/grid/spacers/genericspacer';
+import { ControlSimpleError } from '@/components/controls/errors/controlSimpleError';
+import GetTextTranslation from '@/localization/allTranslations';
+import { CreatePost } from '@/utils/api/post/create';
+import { useRouter } from 'next/router';
+import { GetPostUrlFromSlugAndId } from '@/utils/routing/getposturl';
 
 interface ICreateEditorPanelProps {
 
 }
 
 export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
+    const router = useRouter();
     const dispatch = useDispatch();
+    const language = useSelector((state: RootState) => state.language.language);
+    const session = useSelector((state: RootState) => state.authSession.session);
     const postContentDataJson = useSelector((state: RootState) => state.createEditor.postContentDataJson);
     const postContentData = JSON.parse(postContentDataJson) as PostContentData;
+
+    const title = useSelector((state: RootState) => state.createEditor.title);
+    const isTitleError = useSelector((state: RootState) => state.createEditor.isTitleError);
+    const titleErrorMessage = useSelector((state: RootState) => state.createEditor.titleErrorMessage);
+
+    const isApiInProcess = useSelector((state: RootState) => state.createEditor.isApiInProcess);
+    const isResponseError = useSelector((state: RootState) => state.createEditor.isResponseError);
+    const responseErrorMessage = useSelector((state: RootState) => state.createEditor.responseErrorMessage);
+
+    const OnSubmitButtonClick = async () => {
+
+
+        console.log(1);
+        const sessionToken = session?.Token;
+        if (sessionToken == undefined) {
+            dispatch(setIsApiInProcess(false));
+            dispatch(setResponseErrorMessage("Invalid user session"));
+            return;
+        }
+
+        if (isApiInProcess)
+            return;
+
+        dispatch(setIsApiInProcess(true));
+
+        const response = await CreatePost(title, postContentData, sessionToken)
+
+        dispatch(setResponseErrorMessage(response.message));
+
+        if (!response.success) {
+            await Sleep(500);
+            dispatch(setIsResponseError(true));
+            dispatch(setIsApiInProcess(false));
+            return;
+        }
+
+        dispatch(setIsApiInProcess(false));
+
+        const createdPostID = response.data?.ID;
+        const createdPostSlug = response.data?.Slug;
+
+        if (createdPostID == undefined || createdPostSlug == undefined) {
+            dispatch(setResponseErrorMessage("Post created. But received undefined fields."));
+            dispatch(setIsResponseError(true));
+            return;
+        }
+
+        const createdPostUrl = GetPostUrlFromSlugAndId(createdPostID, createdPostSlug);
+        router.push(createdPostUrl);
+    }
+
+    const OnTitleChange = (value: string) => {
+
+        dispatch(setTitle(value));
+
+        const validationResponse = IsFieldValid(value, "postTitle");
+        dispatch(setIsTitleError(!validationResponse.success));
+        dispatch(setTitleErrorMessage(validationResponse.message));
+    }
 
     const OnAddElementClick = (type: string) => {
         console.log("Adding element - " + type);
@@ -230,7 +301,17 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     return (
         <div className={classes.createeditorpanel}>
             <div className={classes.title}>
-                <input className={classes.titleinput} />
+                <ControlTextField
+                    label={"Title"}
+                    labelname={"title"}
+                    type={"text"}
+                    isRequired={true}
+                    value={title}
+                    isError={isTitleError}
+                    errorMessage={titleErrorMessage}
+                    onChange={OnTitleChange}
+                >
+                </ControlTextField>
             </div>
             <div className={classes.nodegrid}>
                 {
@@ -286,6 +367,24 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                     <p>Add Image</p>
                 </button>
             </nav>
+
+            <GenericSpacer height={20} />
+
+            <ControlButton
+                label={
+                    !isApiInProcess ?
+                        GetTextTranslation("PART_CREATEEDITOR_CREATEPOST", language) :
+                        GetTextTranslation("PART_CREATEEDITOR_CREATEPOST_INPROCESS", language)
+                }
+                onClick={OnSubmitButtonClick}
+                isEnabled={!isApiInProcess}
+            >
+
+            </ControlButton>
+
+            <ControlSimpleError isCentered={false}>
+                {responseErrorMessage}
+            </ControlSimpleError>
         </div>
     );
 }

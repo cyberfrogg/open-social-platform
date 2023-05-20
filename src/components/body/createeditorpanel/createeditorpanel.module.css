@@ -8,7 +8,14 @@
     width: 100%;
 }
 
-.titleinput {}
+.titleinput {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: var(--background-input-text);
+    border-radius: 4px;
+    outline: 0 !important;
+}
 
 .nodegrid {
     width: 100%;
