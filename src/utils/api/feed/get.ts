@@ -1,15 +1,13 @@
-import GetApiUrlForAction from "@/utils/shared/getApiUrlForAction";
 import PostData from "@/data/post/PostData";
 import ReqResponse from "@/data/shared/reqResponse";
-import PostContentData from "@/data/shared/postcontent/postContentData";
+import GetApiUrlForAction from "@/utils/shared/getApiUrlForAction";
 
-const CreatePost = async (title: string, data: PostContentData, token: string): Promise<ReqResponse<PostData | null>> => {
-    const apiUrl = GetApiUrlForAction("post/create");
+const GetFeed = async (token: string, watchedpostsoffset: number): Promise<ReqResponse<PostData[]>> => {
+    const apiUrl = GetApiUrlForAction("feed/get");
 
     const payload = {
-        title: title,
-        postContentData: data,
-        token: token
+        token: token,
+        watchedpostsoffset: watchedpostsoffset
     };
 
     try {
@@ -28,8 +26,8 @@ const CreatePost = async (title: string, data: PostContentData, token: string): 
 
     }
     catch {
-        return new ReqResponse(false, "ERRCODE_UNKNOWN", null);
+        return new ReqResponse(false, "ERRCODE_UNKNOWN", new Array<PostData>());
     }
 }
 
-export { CreatePost }
+export { GetFeed }

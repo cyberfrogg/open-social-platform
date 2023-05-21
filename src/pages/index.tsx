@@ -5,8 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { CreateNewPostPanel } from '@/components/parts/posts/createnewpostpanel/createnewpostpanel';
 import { GenericSpacer } from '@/components/grid/spacers/genericspacer';
+import { PostsFeed } from '@/components/body/postsfeed/postsFeed';
+import PostData from '@/data/post/PostData';
+import { PostFeedItem } from '@/components/parts/posts/postfeeditem/postFeedItem';
+import { PostContent } from '@/components/parts/posts/postcontent/postContent';
+import { GetServerSidePropsContext } from 'next'
+import * as cookie from 'cookie';
+import { GetFeed } from '@/utils/api/feed/get';
 
-export default function Home() {
+interface IUserPageProps {
+    posts: Array<PostData>
+}
+
+const Home: React.FC<IUserPageProps> = (props) => {
     const dispatch = useDispatch();
     const userSession = useSelector((state: RootState) => state.authSession.session);
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
@@ -23,8 +34,46 @@ export default function Home() {
                     <GenericSpacer height={30} />
                     <CreateNewPostPanel />
                     <GenericSpacer height={20} />
+                    <PostsFeed>
+                        {
+                            props.posts.map((post: PostData) => {
+                                return (
+                                    <PostFeedItem
+                                        key={post.ID}
+                                        post={post}
+                                    >
+                                        <PostContent content={post.Content} />
+                                    </PostFeedItem>
+                                )
+                            })
+                        }
+                    </PostsFeed>
                 </MainPageLayout>
             </div>
         </>
     )
 }
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+
+    let token = "";
+    if (context.req.headers.cookie != undefined) {
+        const cookies = cookie.parse(context.req.headers.cookie as string);
+        if (cookies["session"] != undefined) {
+            token = cookies["session"];
+        }
+    }
+
+    let posts = new Array<PostData>();
+
+    let postsGetResponse = await GetFeed(token, 0);
+    posts = postsGetResponse.data;
+
+    return {
+        props: {
+            posts,
+        }
+    };
+}
+
+export default Home;

@@ -19,6 +19,7 @@ export const PostFeedItem: React.FC<IPostFeedItemProps> = (props) => {
     // check if diff between edit and creation less than 10.000ms
     const isCreateAndEditDiffSmall = GetDateDifference(props.post.CreateTime, props.post.LastEditTime) <= 10000;
     const postDateText = isCreateAndEditDiffSmall ? "Created " + FormatDateAgo(props.post.CreateTime) : "Edited " + FormatDateAgo(props.post.LastEditTime);
+    const userUrl = GetUserUrlFromNickname(authorNickname);
 
     useEffect(() => {
         const fetchNickname = async () => {
@@ -32,7 +33,7 @@ export const PostFeedItem: React.FC<IPostFeedItemProps> = (props) => {
     return (
         <article className={classes.postitem}>
             <div className={classes.topinfo}>
-                <Link className={classes.author} href={GetUserUrlFromNickname(authorNickname)}>
+                <Link className={classes.author} href={userUrl}>
                     <div className={classes.avatar}>
 
                     </div>
