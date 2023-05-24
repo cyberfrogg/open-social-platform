@@ -18,6 +18,10 @@ class PostData {
         this.LastEditTime = lastEditTime;
         this.CreateTime = createTime;
     }
+
+    static Empty(): PostData {
+        return new PostData(0, 0, "", "", new PostContentData(), new Date(), new Date());
+    }
 }
 
 export default PostData;

@@ -6,6 +6,7 @@ import authSessionReducer from './slices/auth/authSessionSlice';
 import languageReducer from './slices/languageSlice';
 import profileMenuReducer from './slices/parts/profileMenuSlice';
 import createEditorReducer from './slices/createEditorSlice';
+import feedReducer from './slices/feedSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         language: languageReducer,
         profileMenu: profileMenuReducer,
         createEditor: createEditorReducer,
+        feed: feedReducer
     },
 })
 
