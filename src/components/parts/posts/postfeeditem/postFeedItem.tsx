@@ -7,28 +7,40 @@ import FormatDateAgo from '@/utils/shared/dateFormat';
 import Link from 'next/link';
 import { GetUserUrlFromNickname } from '@/utils/routing/getuserurl';
 import { GetPostUrlFromSlugAndId } from '@/utils/routing/getposturl';
+import PostFeedItemData from '@/data/post/PostFeedItemData';
+import { useDispatch } from 'react-redux';
+import { addPostOnPage, replacePostAtIndex } from '@/slices/feedSlice';
+import Sleep from '../../../../utils/shared/sleep';
 
 export interface IPostFeedItemProps {
-    post: PostData,
+    post: PostFeedItemData,
     children: React.ReactNode
 }
 
 export const PostFeedItem: React.FC<IPostFeedItemProps> = (props) => {
-    const [authorNickname, setAuthorNickname] = useState("");
+    const dispatch = useDispatch();
+    let post = JSON.parse(JSON.stringify(props.post)) as PostFeedItemData;
+    const isAllStaticDataLoaded = post.IsAllStaticDataLoaded;
+    const responseData = post.ResponseData;
 
     // check if diff between edit and creation less than 10.000ms
-    const isCreateAndEditDiffSmall = GetDateDifference(props.post.CreateTime, props.post.LastEditTime) <= 10000;
-    const postDateText = isCreateAndEditDiffSmall ? "Created " + FormatDateAgo(props.post.CreateTime) : "Edited " + FormatDateAgo(props.post.LastEditTime);
-    const userUrl = GetUserUrlFromNickname(authorNickname);
+    const isCreateAndEditDiffSmall = GetDateDifference(responseData.CreateTime, responseData.LastEditTime) <= 10000;
+    const postDateText = isCreateAndEditDiffSmall ? "Created " + FormatDateAgo(responseData.CreateTime) : "Edited " + FormatDateAgo(responseData.LastEditTime);
+    const userUrl = GetUserUrlFromNickname(post.AuthorNickname);
 
     useEffect(() => {
-        const fetchNickname = async () => {
-            const fetchedNickname = await GetNicknameById(props.post.AuthorID);
-            setAuthorNickname(fetchedNickname == null ? "" : fetchedNickname);
+        const fetchData = async () => {
+            const fetchedNickname = await GetNicknameById(responseData.AuthorID);
+
+            post.AuthorNickname = fetchedNickname == null ? "" : fetchedNickname;
+            post.IsAllStaticDataLoaded = true;
+            dispatch(replacePostAtIndex(JSON.stringify({ index: post.Index, postFeedItem: post })));
         }
 
-        fetchNickname();
-    });
+        if (!isAllStaticDataLoaded)
+            fetchData();
+
+    }, [isAllStaticDataLoaded]);
 
     return (
         <article className={classes.postitem}>
@@ -38,14 +50,14 @@ export const PostFeedItem: React.FC<IPostFeedItemProps> = (props) => {
 
                     </div>
                     <div className={classes.authornicknamecontainer}>
-                        <p className={classes.nickname}>{authorNickname}</p>
+                        <p className={classes.nickname}>{post.AuthorNickname}</p>
                     </div>
                 </Link>
                 <time className={classes.postdate}>{postDateText}</time>
             </div>
             <div className={classes.title}>
-                <Link href={GetPostUrlFromSlugAndId(props.post.ID, props.post.Slug)} className={classes.tilteurl}>
-                    <h2 className={classes.tiltetext}>{props.post.Title}</h2>
+                <Link href={GetPostUrlFromSlugAndId(responseData.ID, responseData.Slug)} className={classes.tilteurl}>
+                    <h2 className={classes.tiltetext}>{responseData.Title}</h2>
                 </Link>
             </div>
             <div className={classes.content}>

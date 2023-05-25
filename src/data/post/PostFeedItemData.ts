@@ -4,7 +4,7 @@ class PostFeedItemData {
     Index: number = 0;
     IsRenderedOnServer = false;
     AuthorNickname: string = "";
-    IsAuthorNicknameLoaded = false;
+    IsAllStaticDataLoaded = false;
     ResponseData: PostData = PostData.Empty();
 }
 

@@ -21,21 +21,24 @@ export const languageSlice = createSlice({
         setPostsOnPage: (state, action: PayloadAction<string>) => {
             const deserializedJson = JSON.parse(action.payload) as Array<PostFeedItemData>;
             state.postsOnPage = deserializedJson;
+            state.postsOnPage = FixIndexes(state.postsOnPage);
         },
         replacePostAtIndex: (state, action: PayloadAction<string>) => {
             const deserializedJson = JSON.parse(action.payload);
             const index = deserializedJson.index;
             const postFeedItem = deserializedJson.postFeedItem;
             state.postsOnPage[index] = postFeedItem;
-            console.log(state.postsOnPage);
+            state.postsOnPage = FixIndexes(state.postsOnPage);
         },
         addPostsOnPage: (state, action: PayloadAction<string>) => {
             const deserializedJson = JSON.parse(action.payload) as Array<PostFeedItemData>;
             state.postsOnPage = state.postsOnPage.concat(deserializedJson);
+            state.postsOnPage = FixIndexes(state.postsOnPage);
         },
         addPostOnPage: (state, action: PayloadAction<string>) => {
-            const deserializedJson = JSON.parse(action.payload) as PostFeedItemData;
+            let deserializedJson = JSON.parse(action.payload) as PostFeedItemData;
             state.postsOnPage.push(deserializedJson);
+            state.postsOnPage = FixIndexes(state.postsOnPage);
         },
         setIsServerLoadComplete: (state, action: PayloadAction<boolean>) => {
             state.isServerLoadComplete = action.payload;
@@ -44,7 +47,14 @@ export const languageSlice = createSlice({
             state.isLoadingNewPosts = action.payload;
         },
     },
-})
+});
+
+const FixIndexes = (data: Array<PostFeedItemData>): Array<PostFeedItemData> => {
+    for (let i = 0; i < data.length; i++) {
+        data[i].Index = i;
+    }
+    return data;
+}
 
 export const {
     setPostsOnPage,
