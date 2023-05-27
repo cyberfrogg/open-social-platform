@@ -55,7 +55,7 @@ const Home: React.FC<IUserPageProps> = (props) => {
 
     const LoadNewPosts = async (token: string) => {
         let posts = new Array<PostData>();
-        let postsGetResponse = await GetFeed(token, 0);
+        let postsGetResponse = await GetFeed(token, postsOnPage.length);
         posts = postsGetResponse.data;
 
         let itemsArray = new Array<PostFeedItemData>();
@@ -80,13 +80,6 @@ const Home: React.FC<IUserPageProps> = (props) => {
                     <GenericSpacer height={30} />
                     <CreateNewPostPanel />
                     <GenericSpacer height={20} />
-                    <button onClick={() => {
-                        let a = new PostFeedItemData();
-                        a.ResponseData = new PostData(1, 79, "new", "new", new PostContentData(), new Date(), new Date());
-                        dispatch(addPostOnPage(JSON.stringify(a)))
-                    }}>
-                        +
-                    </button>
                     <PostsFeed>
                         {
                             postsOnPageState.map((post: PostFeedItemData) => {
