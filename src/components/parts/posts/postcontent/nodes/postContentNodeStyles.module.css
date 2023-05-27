@@ -1,6 +1,7 @@
 .paragraph {
     width: 100%;
     margin-bottom: 20px;
+    overflow-wrap: anywhere;
 }
 
 .paragraphlink {

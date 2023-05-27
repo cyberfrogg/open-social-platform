@@ -63,6 +63,7 @@
     height: auto;
     padding: 2px;
     border-radius: 4px;
+    overflow-wrap: anywhere;
 
     outline: 0 !important;
 }
