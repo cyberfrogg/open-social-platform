@@ -3,12 +3,18 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import PostFeedItemData from '@/data/post/PostFeedItemData';
 
 export interface FeedSliceState {
+    type: string;
     isLoadingNewPosts: boolean;
+    isError: boolean,
+    errorMessage: string,
     postsOnPage: Array<PostFeedItemData>;
 }
 
 const initialState: FeedSliceState = {
+    type: "main",
     isLoadingNewPosts: false,
+    isError: false,
+    errorMessage: "",
     postsOnPage: new Array<PostFeedItemData>()
 }
 
@@ -16,6 +22,9 @@ export const languageSlice = createSlice({
     name: 'feed',
     initialState,
     reducers: {
+        setFeedType: (state, action: PayloadAction<string>) => {
+            state.type = action.payload;
+        },
         setPostsOnPage: (state, action: PayloadAction<string>) => {
             const deserializedJson = JSON.parse(action.payload) as Array<PostFeedItemData>;
             state.postsOnPage = deserializedJson;
@@ -41,6 +50,12 @@ export const languageSlice = createSlice({
         setIsLoadingNewPosts: (state, action: PayloadAction<boolean>) => {
             state.isLoadingNewPosts = action.payload;
         },
+        setIsError: (state, action: PayloadAction<boolean>) => {
+            state.isError = action.payload;
+        },
+        setErrorMessage: (state, action: PayloadAction<string>) => {
+            state.errorMessage = action.payload;
+        }
     },
 });
 
@@ -52,11 +67,14 @@ const FixIndexes = (data: Array<PostFeedItemData>): Array<PostFeedItemData> => {
 }
 
 export const {
+    setFeedType,
     setPostsOnPage,
     replacePostAtIndex,
     addPostsOnPage,
     addPostOnPage,
-    setIsLoadingNewPosts
+    setIsLoadingNewPosts,
+    setIsError,
+    setErrorMessage
 } = languageSlice.actions
 
 export default languageSlice.reducer

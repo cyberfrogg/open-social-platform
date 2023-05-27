@@ -12,10 +12,11 @@ import { PostContent } from '@/components/parts/posts/postcontent/postContent';
 import { GetServerSidePropsContext } from 'next'
 import * as cookie from 'cookie';
 import { GetFeed } from '@/utils/api/feed/get';
-import { addPostOnPage, addPostsOnPage, setIsLoadingNewPosts, setPostsOnPage } from '@/slices/feedSlice';
+import { addPostOnPage, addPostsOnPage, setErrorMessage, setFeedType, setIsError, setIsLoadingNewPosts, setPostsOnPage } from '@/slices/feedSlice';
 import PostFeedItemData from '@/data/post/PostFeedItemData';
 import PostContentData from '../data/shared/postcontent/postContentData';
 import usePageBottom from '../hooks/usePageBottom';
+import { PostsFeedError } from '@/components/body/postsfeed/postsFeedError';
 
 interface IUserPageProps {
     serversideItems: string
@@ -25,11 +26,16 @@ const Home: React.FC<IUserPageProps> = (props) => {
     const serversideItems = JSON.parse(props.serversideItems) as Array<PostFeedItemData>;
     const [postsOnPageState, setPostsOnPageState] = useState(serversideItems);
     const dispatch = useDispatch();
+
     const userSession = useSelector((state: RootState) => state.authSession.session);
     const userSessionToken = userSession != null ? userSession.Token : "";
+    const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+
     const postsOnPage = useSelector((state: RootState) => state.feed.postsOnPage);
     const isLoadingNewPosts = useSelector((state: RootState) => state.feed.isLoadingNewPosts);
-    const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+
+    const isError = useSelector((state: RootState) => state.feed.isError);
+    const errorMessage = useSelector((state: RootState) => state.feed.errorMessage);
 
     const isPageBottomReached = usePageBottom(10);
 
@@ -40,12 +46,13 @@ const Home: React.FC<IUserPageProps> = (props) => {
         // setup serverside posts to client state
         if (postsOnPage.length == 0) {
             dispatch(setPostsOnPage(JSON.stringify(serversideItems)));
+            dispatch(setFeedType("main"));
             setPostsOnPageState(serversideItems);
         }
 
         setPostsOnPageState(postsOnPage);   // i forgor why i need this
 
-        if (postsOnPage.length != 0 && isPageBottomReached && !isLoadingNewPosts) {
+        if (postsOnPage.length != 0 && isPageBottomReached && !isLoadingNewPosts && !isError) {
             console.log("Loading new posts");
             dispatch(setIsLoadingNewPosts(true));
             LoadNewPosts(userSessionToken);
@@ -56,6 +63,12 @@ const Home: React.FC<IUserPageProps> = (props) => {
     const LoadNewPosts = async (token: string) => {
         let posts = new Array<PostData>();
         let postsGetResponse = await GetFeed(token, postsOnPage.length);
+        if (!postsGetResponse.success) {
+            dispatch(setIsLoadingNewPosts(false));
+            dispatch(setIsError(true));
+            dispatch(setErrorMessage(postsGetResponse.message));
+            return;
+        }
         posts = postsGetResponse.data;
 
         let itemsArray = new Array<PostFeedItemData>();
@@ -94,6 +107,8 @@ const Home: React.FC<IUserPageProps> = (props) => {
                             })
                         }
                     </PostsFeed>
+                    <GenericSpacer height={20} />
+                    <PostsFeedError isShown={isError} message={errorMessage} />
                 </MainPageLayout>
             </div>
         </>
