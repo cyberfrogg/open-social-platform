@@ -38,7 +38,7 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
             return;
 
         const collectedNickname = await GetNicknameById(session.UserId);
-        dispatch(setNickname(collectedNickname));
+        dispatch(setNickname(collectedNickname != null ? collectedNickname : ""));
         dispatch(setIsLoaded(true));
     }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const usePageBottom = () => {
+const usePageBottom = (offset: number) => {
     const [reachedBottom, setReachedBottom] = useState(false);
 
     useEffect(() => {
@@ -9,7 +9,7 @@ const usePageBottom = () => {
             const innerHeight = window.innerHeight;
             const scrollTop = document.documentElement.scrollTop;
 
-            const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= 50;
+            const hasReachedBottom = offsetHeight - (innerHeight + scrollTop) <= offset;
 
             setReachedBottom(hasReachedBottom);
         };

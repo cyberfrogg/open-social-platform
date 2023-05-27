@@ -3,13 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import PostFeedItemData from '@/data/post/PostFeedItemData';
 
 export interface FeedSliceState {
-    isServerLoadComplete: boolean;
     isLoadingNewPosts: boolean;
     postsOnPage: Array<PostFeedItemData>;
 }
 
 const initialState: FeedSliceState = {
-    isServerLoadComplete: false,
     isLoadingNewPosts: false,
     postsOnPage: new Array<PostFeedItemData>()
 }
@@ -31,7 +29,7 @@ export const languageSlice = createSlice({
             state.postsOnPage = FixIndexes(state.postsOnPage);
         },
         addPostsOnPage: (state, action: PayloadAction<string>) => {
-            const deserializedJson = JSON.parse(action.payload) as Array<PostFeedItemData>;
+            const deserializedJson = JSON.parse(action.payload);
             state.postsOnPage = state.postsOnPage.concat(deserializedJson);
             state.postsOnPage = FixIndexes(state.postsOnPage);
         },
@@ -39,9 +37,6 @@ export const languageSlice = createSlice({
             let deserializedJson = JSON.parse(action.payload) as PostFeedItemData;
             state.postsOnPage.push(deserializedJson);
             state.postsOnPage = FixIndexes(state.postsOnPage);
-        },
-        setIsServerLoadComplete: (state, action: PayloadAction<boolean>) => {
-            state.isServerLoadComplete = action.payload;
         },
         setIsLoadingNewPosts: (state, action: PayloadAction<boolean>) => {
             state.isLoadingNewPosts = action.payload;
@@ -61,7 +56,6 @@ export const {
     replacePostAtIndex,
     addPostsOnPage,
     addPostOnPage,
-    setIsServerLoadComplete,
     setIsLoadingNewPosts
 } = languageSlice.actions
 

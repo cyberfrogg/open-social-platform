@@ -50,6 +50,7 @@ const UserPage: React.FC<IUserPageProps> = (props) => {
                     <PostsFeed>
                         {
                             props.posts.map((post: PostData) => {
+                                /* frozen
                                 return (
                                     <PostFeedItem
                                         key={post.ID}
@@ -57,6 +58,13 @@ const UserPage: React.FC<IUserPageProps> = (props) => {
                                     >
                                         <PostContent content={post.Content} />
                                     </PostFeedItem>
+                                )
+                                */
+
+                                return (
+                                    <p key={post.ID}>
+                                        {JSON.stringify(post)}
+                                    </p>
                                 )
                             })
                         }

@@ -12,9 +12,10 @@ import { PostContent } from '@/components/parts/posts/postcontent/postContent';
 import { GetServerSidePropsContext } from 'next'
 import * as cookie from 'cookie';
 import { GetFeed } from '@/utils/api/feed/get';
-import { addPostOnPage, setPostsOnPage } from '@/slices/feedSlice';
+import { addPostOnPage, addPostsOnPage, setIsLoadingNewPosts, setPostsOnPage } from '@/slices/feedSlice';
 import PostFeedItemData from '@/data/post/PostFeedItemData';
 import PostContentData from '../data/shared/postcontent/postContentData';
+import usePageBottom from '../hooks/usePageBottom';
 
 interface IUserPageProps {
     serversideItems: string
@@ -25,8 +26,12 @@ const Home: React.FC<IUserPageProps> = (props) => {
     const [postsOnPageState, setPostsOnPageState] = useState(serversideItems);
     const dispatch = useDispatch();
     const userSession = useSelector((state: RootState) => state.authSession.session);
+    const userSessionToken = userSession != null ? userSession.Token : "";
     const postsOnPage = useSelector((state: RootState) => state.feed.postsOnPage);
+    const isLoadingNewPosts = useSelector((state: RootState) => state.feed.isLoadingNewPosts);
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
+
+    const isPageBottomReached = usePageBottom(10);
 
     useEffect(() => {
         // setup usersession
@@ -38,8 +43,35 @@ const Home: React.FC<IUserPageProps> = (props) => {
             setPostsOnPageState(serversideItems);
         }
 
-        setPostsOnPageState(postsOnPage);
-    }, [postsOnPage]);
+        setPostsOnPageState(postsOnPage);   // i forgor why i need this
+
+        if (postsOnPage.length != 0 && isPageBottomReached && !isLoadingNewPosts) {
+            console.log("Loading new posts");
+            dispatch(setIsLoadingNewPosts(true));
+            LoadNewPosts(userSessionToken);
+        }
+
+    }, [postsOnPage, isPageBottomReached]);
+
+    const LoadNewPosts = async (token: string) => {
+        let posts = new Array<PostData>();
+        let postsGetResponse = await GetFeed(token, 0);
+        posts = postsGetResponse.data;
+
+        let itemsArray = new Array<PostFeedItemData>();
+        for (let i = 0; i < posts.length; i++) {
+            const element = posts[i];
+            let newElement = new PostFeedItemData();
+            newElement.Index = i;
+            newElement.IsRenderedOnServer = true;
+            newElement.ResponseData = element;
+
+            itemsArray.push(newElement);
+        }
+
+        dispatch(addPostsOnPage(JSON.stringify(itemsArray)));
+        dispatch(setIsLoadingNewPosts(false));
+    }
 
     return (
         <>
