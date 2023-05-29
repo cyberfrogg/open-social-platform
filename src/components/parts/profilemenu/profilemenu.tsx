@@ -31,7 +31,7 @@ export const ProfileMenu: React.FC<IProfileMenuProps> = (props) => {
             return;
 
         setupComponent();
-    });
+    }, [isSessionCollected, isLoaded]);
 
     const setupComponent = async () => {
         if (session == undefined)

@@ -27,6 +27,7 @@ export const languageSlice = createSlice({
         },
         setPostsOnPage: (state, action: PayloadAction<string>) => {
             const deserializedJson = JSON.parse(action.payload) as Array<PostFeedItemData>;
+            state.postsOnPage = new Array<PostFeedItemData>();
             state.postsOnPage = deserializedJson;
             state.postsOnPage = FixIndexes(state.postsOnPage);
         },
