@@ -3,6 +3,7 @@ import React from 'react';
 import classes from "./header.module.css";
 import { ProfileMenu } from '../parts/profilemenu/profilemenu';
 import Link from 'next/link';
+import { SideBarHamburger } from '../body/sidebar/sidebarhamburger';
 
 interface IHeaderProps {
 
@@ -46,7 +47,14 @@ export const Header: React.FC<IHeaderProps> = (props) => {
 
                     </div>
                     <div className={classes.rightbar}>
-                        <ProfileMenu />
+                        <div className={classes.mobileswitch}>
+                            <div className={classes.mobile}>
+                                <SideBarHamburger />
+                            </div>
+                            <div className={classes.desktop}>
+                                <ProfileMenu />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>

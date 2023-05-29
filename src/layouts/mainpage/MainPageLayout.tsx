@@ -6,7 +6,7 @@ import { Header } from '@/components/header/header';
 import { RightBar } from '@/components/body/rightbar/rightbar';
 
 interface IMainPageLayoutProps {
-    title: string
+    title: string,
     children: React.ReactNode
 }
 

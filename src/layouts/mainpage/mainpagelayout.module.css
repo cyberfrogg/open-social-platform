@@ -23,3 +23,9 @@
         grid-template-columns: 210px 1fr;
     }
 }
+
+@media all and (max-width: 800px) {
+    .contentsplit {
+        grid-template-columns: 1fr;
+    }
+}

@@ -67,9 +67,14 @@
     font-weight: 600;
 }
 
+.mobileswitch .mobile {
+    display: none;
+}
+
 @media all and (max-width: 800px) {
     .headercontainer {
-        grid-template-columns: 50px 1fr 240px;
+        grid-template-columns: 50px 1fr 50px;
+        width: calc(100% - 20px);
     }
 
     .logo {
@@ -82,6 +87,14 @@
     }
 
     .logo .wide {
+        display: none;
+    }
+
+    .mobileswitch .mobile {
+        display: initial;
+    }
+
+    .mobileswitch .desktop {
         display: none;
     }
 }
