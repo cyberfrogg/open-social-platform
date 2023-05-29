@@ -23,6 +23,7 @@ interface IUserPageProps {
 }
 
 const Home: React.FC<IUserPageProps> = (props) => {
+    const feedTypeName = "main";
     const serversideItems = JSON.parse(props.serversideItems) as Array<PostFeedItemData>;
     const [postsOnPageState, setPostsOnPageState] = useState(serversideItems);
     const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Home: React.FC<IUserPageProps> = (props) => {
     const userSessionToken = userSession != null ? userSession.Token : "";
     const isSessionCollected = useSelector((state: RootState) => state.authSession.isSessionCollected);
 
+    const feedType = useSelector((state: RootState) => state.feed.type);
     const postsOnPage = useSelector((state: RootState) => state.feed.postsOnPage);
     const isLoadingNewPosts = useSelector((state: RootState) => state.feed.isLoadingNewPosts);
 
@@ -44,9 +46,9 @@ const Home: React.FC<IUserPageProps> = (props) => {
         SetupClientSession(userSession, isSessionCollected, dispatch);
 
         // setup serverside posts to client state
-        if (postsOnPage.length == 0) {
+        if (postsOnPage.length == 0 || feedType != feedTypeName) {
             dispatch(setPostsOnPage(JSON.stringify(serversideItems)));
-            dispatch(setFeedType("main"));
+            dispatch(setFeedType(feedTypeName));
             setPostsOnPageState(serversideItems);
         }
 
