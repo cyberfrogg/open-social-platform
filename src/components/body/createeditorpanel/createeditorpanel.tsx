@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './createeditorpanel.module.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { addEditorNodeToEnd, addParagraphInnerNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveNode, moveParagraphInnerNode, selectNode, selectParagraphInnerNode, setIsApiInProcess, setIsResponseError, setIsTitleError, setResponseErrorMessage, setTitle, setTitleErrorMessage } from '@/slices/createEditorSlice';
+import { addEditorNodeToEnd, addParagraphInnerNode, changeImageNode, changeParagraphInnerNode, deleteNode, deleteParagraphInnerNode, deselectAll, moveNode, moveParagraphInnerNode, selectNode, selectParagraphInnerNode, setIsApiInProcess, setIsResponseError, setIsTitleError, setResponseErrorMessage, setTitle, setTitleErrorMessage } from '@/slices/createEditorSlice';
 import IPostContentNodeData from '../../../data/shared/postcontent/IPostContentNodeData';
 import PostContentNodeParagraphData from '../../../data/shared/postcontent/nodes/PostContentNodeParagraphData';
 import PostContentNodeImageData from '../../../data/shared/postcontent/nodes/PostContentNodeImageData';
@@ -21,6 +21,9 @@ import GetTextTranslation from '@/localization/allTranslations';
 import { CreatePost } from '@/utils/api/post/create';
 import { useRouter } from 'next/router';
 import { GetPostUrlFromSlugAndId } from '@/utils/routing/getposturl';
+import { ControlImage } from '@/components/controls/image/controlImage';
+import { ControlFileField } from '@/components/controls/fields/filefield/controlFileField';
+import fileToBase64 from '@/utils/shared/fileUtils';
 
 interface ICreateEditorPanelProps {
 
@@ -43,9 +46,6 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
     const responseErrorMessage = useSelector((state: RootState) => state.createEditor.responseErrorMessage);
 
     const OnSubmitButtonClick = async () => {
-
-
-        console.log(1);
         const sessionToken = session?.Token;
         if (sessionToken == undefined) {
             dispatch(setIsApiInProcess(false));
@@ -102,7 +102,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                 newElement = new PostContentNodeParagraphData("paragraph", [new PostContentNodeTextData("text", "Text here...")]);
                 break;
             case "image":
-                newElement = new PostContentNodeImageData("image", "Image description here", "https://example.com/")
+                newElement = new PostContentNodeImageData("image", "Image description here", "https://i.imgur.com/GiGGd6K.png", 506, 228)
                 break;
             default:
                 console.error("Failed to create new element for type " + type);
@@ -131,6 +131,8 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
 
         dispatch(moveNode(JSON.stringify(payload)));
     }
+
+    // Paragraph
 
     const OnParagraphNodeSelect = (paragraphNode: PostContentNodeParagraphData, innerNode: PostContentNodeTextData | PostContentNodeLinkData) => {
         if (!innerNode.editor.isSelected) {
@@ -186,6 +188,16 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         dispatch(moveParagraphInnerNode(JSON.stringify(payload)));
     }
 
+    // Image
+
+    const OnImageFileUpload = async (event: any, node: PostContentNodeImageData) => {
+        const imageFile = event.target.files[0] as File;
+        node.fileBase64 = await fileToBase64(imageFile);
+
+        dispatch(changeImageNode(JSON.stringify(node)));
+    }
+
+
 
     const RenderPostContentNodeContent = (node: IPostContentNodeData) => {
         switch (node.type) {
@@ -205,8 +217,46 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                     </div>
                 )
             case "image":
+                const imageNode = node as PostContentNodeImageData;
+
                 return (
-                    <p>Images are not available yet</p>
+                    <div
+                        key={node.editor.index}
+                        className={classes.nodeContentImage}
+                    >
+                        <div className={classes.inputupload}>
+                            <ControlFileField
+                                label={"Image"}
+                                labelname={"image"}
+                                accept={"image/png, image/gif, image/jpeg, image/jpg"}
+                                filename={imageNode.fileBase64 == "" ? "No file selected" : "File uploaded!"}
+                                isRequired={true}
+                                isError={false}
+                                errorMessage={''}
+                                onChange={(e: any) => { OnImageFileUpload(e, imageNode) }}
+                            >
+
+                            </ControlFileField>
+                            <ControlTextField
+                                label={"Image description (Alt text)"}
+                                labelname={"text"}
+                                type={"text"}
+                                isRequired={false}
+                                value={""}
+                                isError={false}
+                                errorMessage={""}
+                                onChange={undefined}
+                            >
+                            </ControlTextField>
+                        </div>
+
+                        <ControlImage
+                            src={imageNode.fileBase64}
+                            alt={imageNode.description}
+                            srcWidth={imageNode.width}
+                            srcHeight={imageNode.height}
+                        />
+                    </div>
                 )
             default:
                 break;
@@ -260,7 +310,6 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
             case "link":
                 const linkNode = innerNode as PostContentNodeLinkData;
                 return (
-                    // Why "new Date().getTime()" next to all keys of "ContentEditableWithRef" component? Why react is shit? https://stackoverflow.com/questions/30242530/dangerouslysetinnerhtml-doesnt-update-during-render
                     <React.Fragment key={innerNode.editor.index + "_" + innerNode.editor.hash}>
                         <div className={classes.editorpanel + " " + (linkNode.editor.isSelected ? classes.selected : "")}>
                             <div className={classes.editorpanellink}>

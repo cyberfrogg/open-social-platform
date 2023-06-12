@@ -98,6 +98,18 @@
     border: var(--outline-panel);
 }
 
+.nodeContentImage {
+    width: 100%;
+}
+
+.nodeContentImage .inputupload {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
 
 .editorpanel {
     opacity: 0;

@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import IPostContentNodeData from '../data/shared/postcontent/IPostContentNodeData';
 import PostContentData from '../data/shared/postcontent/postContentData';
 import PostContentNodeParagraphData from '@/data/shared/postcontent/nodes/PostContentNodeParagraphData';
+import PostContentNodeImageData from '@/data/shared/postcontent/nodes/PostContentNodeImageData';
 
 export interface CreateEditorSliceState {
     title: string,
@@ -161,6 +162,8 @@ export const createEditorSlice = createSlice({
             state.postContentDataJson = JSON.stringify(postContentData);
         },
 
+        // paragraph
+
         changeParagraphInnerNode: (state, action: PayloadAction<string>) => {
             const postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
             const payload = JSON.parse(action.payload) as PostContentNodeParagraphData;
@@ -257,6 +260,31 @@ export const createEditorSlice = createSlice({
 
             state.postContentDataJson = JSON.stringify(postContentData);
         },
+
+        // image
+
+        changeImageNode: (state, action: PayloadAction<string>) => {
+            let postContentData = JSON.parse(state.postContentDataJson) as PostContentData;
+            const payload = JSON.parse(action.payload) as PostContentNodeImageData;
+
+            const node = postContentData.nodes.find((node) => { return node.editor.index == payload.editor.index }) as PostContentNodeImageData
+            if (node == undefined) {
+                console.error("Failed to get node for index " + action.payload);
+                return;
+            }
+
+            node.description = payload.description;
+            node.editor = payload.editor;
+            node.width = payload.width;
+            node.height = payload.height;
+            node.type = payload.type;
+            node.url = payload.url;
+            node.fileBase64 = payload.fileBase64;
+
+            postContentData = FixIndexes(postContentData);
+
+            state.postContentDataJson = JSON.stringify(postContentData);
+        }
     },
 })
 
@@ -296,7 +324,8 @@ export const {
     setTitleErrorMessage,
     setIsApiInProcess,
     setIsResponseError,
-    setResponseErrorMessage
+    setResponseErrorMessage,
+    changeImageNode
 } = createEditorSlice.actions
 
 export default createEditorSlice.reducer
