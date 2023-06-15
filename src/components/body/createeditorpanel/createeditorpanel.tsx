@@ -23,6 +23,7 @@ import { useRouter } from 'next/router';
 import { GetPostUrlFromSlugAndId } from '@/utils/routing/getposturl';
 import { ControlImage } from '@/components/controls/image/controlImage';
 import { ControlFileField } from '@/components/controls/fields/filefield/controlFileField';
+import { UserAssetsUpload } from '@/utils/api/user/assets/upload';
 import fileToBase64 from '@/utils/shared/fileUtils';
 
 interface ICreateEditorPanelProps {
@@ -102,7 +103,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                 newElement = new PostContentNodeParagraphData("paragraph", [new PostContentNodeTextData("text", "Text here...")]);
                 break;
             case "image":
-                newElement = new PostContentNodeImageData("image", "Image description here", "https://i.imgur.com/GiGGd6K.png", 506, 228)
+                newElement = new PostContentNodeImageData("image", "", "", 506, 228)
                 break;
             default:
                 console.error("Failed to create new element for type " + type);
@@ -192,7 +193,29 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
 
     const OnImageFileUpload = async (event: any, node: PostContentNodeImageData) => {
         const imageFile = event.target.files[0] as File;
-        node.fileBase64 = await fileToBase64(imageFile);
+
+        if (session?.Token == undefined) {
+            return;
+        }
+
+        const imageFileArrayBuffer = await imageFile.arrayBuffer()
+
+        const fileBuffer = Buffer.from(imageFileArrayBuffer);
+        const fileBase64 = fileBuffer.toString('base64');
+
+        const response = await UserAssetsUpload(session?.Token, fileBuffer);
+        if (!response.success) {
+            console.error(response.message);
+            return;
+        }
+
+        node.assetUuid = response.data.Uuid;
+
+        dispatch(changeImageNode(JSON.stringify(node)));
+    }
+
+    const OnImageAltTextChanged = async (text: string, node: PostContentNodeImageData) => {
+        node.description = text;
 
         dispatch(changeImageNode(JSON.stringify(node)));
     }
@@ -229,7 +252,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                                 label={"Image"}
                                 labelname={"image"}
                                 accept={"image/png, image/gif, image/jpeg, image/jpg"}
-                                filename={imageNode.fileBase64 == "" ? "No file selected" : "File uploaded!"}
+                                filename={imageNode.assetUuid == "" ? "No file selected" : "File uploaded!"}
                                 isRequired={true}
                                 isError={false}
                                 errorMessage={''}
@@ -242,16 +265,16 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                                 labelname={"text"}
                                 type={"text"}
                                 isRequired={false}
-                                value={""}
+                                value={imageNode.description}
                                 isError={false}
                                 errorMessage={""}
-                                onChange={undefined}
+                                onChange={(e: any) => { OnImageAltTextChanged(e, imageNode) }}
                             >
                             </ControlTextField>
                         </div>
 
                         <ControlImage
-                            src={imageNode.fileBase64}
+                            src={imageNode.url}
                             alt={imageNode.description}
                             srcWidth={imageNode.width}
                             srcHeight={imageNode.height}

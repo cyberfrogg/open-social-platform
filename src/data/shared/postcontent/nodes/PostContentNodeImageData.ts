@@ -4,8 +4,8 @@ import PostContentEditorNodeData from "../PostContentEditorNodeData";
 class PostContentNodeImageData implements IPostContentNodeData {
     type: string = "image"
     description: string = "";
+    assetUuid: string = "";
     url: string = "";
-    fileBase64: string = "";
     width: number = 0;
     height: number = 0;
 
