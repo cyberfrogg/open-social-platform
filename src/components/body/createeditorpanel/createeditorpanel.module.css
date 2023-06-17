@@ -274,3 +274,9 @@
         opacity: 1;
     }
 }
+
+@media all and (max-width: 1100px) {
+    .nodesidenav {
+        right: -17px;
+    }
+}
