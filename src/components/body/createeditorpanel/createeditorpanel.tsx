@@ -103,7 +103,7 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
                 newElement = new PostContentNodeParagraphData("paragraph", [new PostContentNodeTextData("text", "Text here...")]);
                 break;
             case "image":
-                newElement = new PostContentNodeImageData("image", "", "", 506, 228)
+                newElement = new PostContentNodeImageData("image", "", "", "", 506, 228)
                 break;
             default:
                 console.error("Failed to create new element for type " + type);
@@ -201,14 +201,12 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
         const imageFileArrayBuffer = await imageFile.arrayBuffer()
 
         const fileBuffer = Buffer.from(imageFileArrayBuffer);
-        const fileBase64 = fileBuffer.toString('base64');
 
         const response = await UserAssetsUpload(session?.Token, fileBuffer);
         if (!response.success) {
             console.error(response.message);
             return;
         }
-
 
         node.assetUuid = response.data.imageUuid;
         node.url = response.data.url;

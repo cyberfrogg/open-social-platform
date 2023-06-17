@@ -279,7 +279,7 @@ export const createEditorSlice = createSlice({
             node.height = payload.height;
             node.type = payload.type;
             node.url = payload.url;
-            node.fileBase64 = payload.fileBase64;
+            node.assetUuid = payload.assetUuid;
 
             postContentData = FixIndexes(postContentData);
 
