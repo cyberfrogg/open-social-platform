@@ -67,6 +67,7 @@ export default function EmailVerify() {
             dispatch(setIsButtonEnabled(false));
 
             const response = await VerifyEmail();
+            console.log("Response received. IsSuccess:" + response.success);
 
             if (!response.success || response.data == null) {
                 OnTokenFieldChange(tokenValue);
@@ -78,14 +79,12 @@ export default function EmailVerify() {
             else {
                 dispatch(setIsSuccess(true));
                 console.log("Email verification done!");
-                console.log(response.data);
-
-                await Sleep(3000);
 
                 ApplyClientSessionData(response.data);
 
+                await Sleep(3000);
+
                 router.push(redirectPageAfterSuccess);
-                router.reload();
             }
 
             dispatch(setIsButtonEnabled(true));

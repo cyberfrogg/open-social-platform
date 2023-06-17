@@ -16,3 +16,34 @@
     display: flex;
     flex-direction: column;
 }
+
+.mobileprofilemenu {
+    display: none;
+}
+
+@media all and (max-width: 800px) {
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: 50px;
+        background: var(--background-panel);
+        z-index: 1000;
+        width: 210px;
+        height: calc(100% - 50px);
+        border-left: 1px solid var(--outline-panel-color);
+        transform: translateX(100%);
+        transition: 0.2s ease-out;
+        padding-top: 0px;
+    }
+
+    .sidebar.opened {
+        transform: translateX(0%);
+        transition: 0.2s ease-out;
+    }
+
+    .mobileprofilemenu {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

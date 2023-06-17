@@ -1,0 +1,24 @@
+.error {
+    width: 100%;
+    height: 100px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error.shown {
+    display: flex;
+}
+
+.title {
+    text-align: center;
+    color: var(--font-color-primary);
+    margin-bottom: 20px;
+}
+
+.message {
+    text-align: center;
+    color: var(--font-color-secondary);
+    font-size: 12px;
+}

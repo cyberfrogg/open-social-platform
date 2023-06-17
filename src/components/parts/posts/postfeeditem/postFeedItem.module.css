@@ -1,0 +1,67 @@
+.postitem {
+    width: calc(100%);
+    border: var(--outline-panel);
+    background: var(--background-panel);
+    padding: 20px;
+    border-radius: 32px;
+    margin-bottom: 20px;
+}
+
+.topinfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.author {
+    height: 20px;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    grid-gap: 10px;
+}
+
+.author .avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background: var(--background-input-text);
+    border: var(--outline-panel);
+}
+
+.author .authornicknamecontainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.author .authornicknamecontainer .nickname {
+    color: var(--font-color-primary);
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.author:hover .nickname:hover {
+    text-decoration: underline;
+}
+
+.postdate {
+    color: var(--font-color-secondary);
+    font-size: 12px;
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 20px;
+    overflow-wrap: anywhere;
+}
+
+.tilteurl {
+    width: 100%;
+}
+
+.tiltetext {
+    width: 100%;
+    font-size: var(--font-size-panel-title);
+    font-weight: var(--font-weight-panel-title);
+}
