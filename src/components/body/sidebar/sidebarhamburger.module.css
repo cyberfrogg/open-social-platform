@@ -1,0 +1,54 @@
+.button {
+    width: 50px;
+    height: 50px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.button svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.button svg * {
+    stroke: var(--font-color-secondary);
+    transition: 0.2s;
+}
+
+.button:hover svg * {
+    transition: 0.2s;
+}
+
+.button .hamsvg {
+    opacity: 1;
+    transition: 0.2s;
+}
+
+.button .closesvg {
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.button.opened .hamsvg {
+    opacity: 0;
+    transition: 0.2s;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.button.opened .hamsvg * {
+    stroke: var(--font-color-primary);
+}
+
+.button.opened .closesvg {
+    opacity: 1;
+    transition: 0.2s;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.button.opened .closesvg * {
+    stroke: var(--font-color-primary);
+}

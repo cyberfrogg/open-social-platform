@@ -6,7 +6,7 @@ import { Header } from '@/components/header/header';
 import { RightBar } from '@/components/body/rightbar/rightbar';
 
 interface IMainPageLayoutProps {
-    title: string
+    title: string,
     children: React.ReactNode
 }
 
@@ -20,9 +20,9 @@ export const MainPageLayout: React.FC<IMainPageLayoutProps> = (props) => {
             <Header />
             <div className={classes.contentsplit}>
                 <SideBar />
-                <div className={classes.maincontent}>
+                <main className={classes.maincontent}>
                     {props.children}
-                </div>
+                </main>
                 <RightBar />
             </div>
         </div>

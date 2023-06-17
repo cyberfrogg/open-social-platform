@@ -3,6 +3,8 @@ const localization = {
         "PART_SIDEBAR_HOME": "Home",
         "PART_SIDEBAR_SIGNIN": "Sign in",
         "PART_SIDEBAR_JOIN": "Join",
+        "PART_CREATEEDITOR_CREATEPOST": "Create post",
+        "PART_CREATEEDITOR_CREATEPOST_INPROCESS": "Creating post...",
 
         "ERRCODE_VALIDATION_NO_TYPE": "Failed to validate field type.",
         "ERRCODE_VALIDATION_FAIL": "Failed to validate field",
@@ -31,6 +33,8 @@ const localization = {
         "PART_SIDEBAR_HOME": "Главная",
         "PART_SIDEBAR_SIGNIN": "Войти",
         "PART_SIDEBAR_JOIN": "Присоединится",
+        "PART_CREATEEDITOR_CREATEPOST": "Создать пост",
+        "PART_CREATEEDITOR_CREATEPOST_INPROCESS": "Создаем пост...",
 
         "ERRCODE_VALIDATION_NO_TYPE": "Невозможно определить тип поля.",
         "ERRCODE_VALIDATION_FAIL": "Невозможно проверить поле.",

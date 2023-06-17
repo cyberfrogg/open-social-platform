@@ -1,3 +1,9 @@
 .rightbar {
     width: 100%;
 }
+
+@media all and (max-width: 1100px) {
+    .rightbar {
+        display: none;
+    }
+}
