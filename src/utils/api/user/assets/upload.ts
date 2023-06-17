@@ -2,7 +2,7 @@ import ReqResponse from "@/data/shared/reqResponse";
 import UserAssetsRowData from "@/data/user/assets/userassetsrowdata";
 import GetApiUrlForAction from "@/utils/shared/getApiUrlForAction";
 
-const UserAssetsUpload = async (token: string, file: Buffer): Promise<ReqResponse<UserAssetsRowData>> => {
+const UserAssetsUpload = async (token: string, file: Buffer): Promise<ReqResponse<any>> => {
     const apiUrl = GetApiUrlForAction("user/assets/upload");
 
     let formData = new FormData();
@@ -18,7 +18,7 @@ const UserAssetsUpload = async (token: string, file: Buffer): Promise<ReqRespons
         });
 
         const fetchedJson = await fetchedRequest.json();
-        const fetchedJsonAsData = fetchedJson as ReqResponse<UserAssetsRowData>;
+        const fetchedJsonAsData = fetchedJson as ReqResponse<any>;
 
         return fetchedJsonAsData;
     }

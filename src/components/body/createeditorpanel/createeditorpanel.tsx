@@ -209,7 +209,11 @@ export const CreateEditorPanel: React.FC<ICreateEditorPanelProps> = (props) => {
             return;
         }
 
-        node.assetUuid = response.data.Uuid;
+
+        node.assetUuid = response.data.imageUuid;
+        node.url = response.data.url;
+        node.width = response.data.width;
+        node.height = response.data.height;
 
         dispatch(changeImageNode(JSON.stringify(node)));
     }
